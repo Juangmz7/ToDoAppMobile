@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/auth/domain/enitites/user.dart';
 import 'package:todo_app/auth/domain/infrastructure/repositories/user_repository_impl.dart';
 import 'package:todo_app/auth/domain/repositories/user_repository.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
@@ -68,6 +70,11 @@ class AuthNotifier extends StateNotifier<AuthState>{
       );
 
       _setLoggedUser(user);
+
+      // Token storage
+      final tokenStorage = FlutterSecureStorage();
+      await tokenStorage.write(key: 'token', value: token);
+
     }
     catch (e) {
       logout(e.toString());    
@@ -80,8 +87,6 @@ class AuthNotifier extends StateNotifier<AuthState>{
       authStatus: AuthStatus.authenticated,
       user: user
     );
-
-    //ToDo: Token storage
   }
 
 
@@ -89,7 +94,10 @@ class AuthNotifier extends StateNotifier<AuthState>{
   Future<void> logout( String? errorMessage ) async {
     
     //ToDo: Logout del server
-    //ToDo: Eliminar token
+    
+    // Token remove
+    final tokenStorage = FlutterSecureStorage();
+    tokenStorage.delete(key: 'token');
 
     // Update the state
     state = state.copyWith(
