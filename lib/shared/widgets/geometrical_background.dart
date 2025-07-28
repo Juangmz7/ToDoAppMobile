@@ -60,7 +60,7 @@ class GeometricalBackground extends StatelessWidget {
           ),
 
           Align(
-            alignment: Alignment(0,-0.2),
+            alignment: Alignment(0,-0.1),
             child: child,
           )
         ],
