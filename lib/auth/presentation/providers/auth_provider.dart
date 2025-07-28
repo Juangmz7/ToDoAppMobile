@@ -70,23 +70,34 @@ class AuthNotifier extends StateNotifier<AuthState>{
       _setLoggedUser(user);
     }
     catch (e) {
-      //logout('Error login : $e');
-      print('Error login : $e');
+      logout(e.toString());    
     }
   }
 
   // Creates a new authenticated state
   void _setLoggedUser( User user ) {
-    state.copyWith(
+    state = state.copyWith(
       authStatus: AuthStatus.authenticated,
       user: user
     );
 
-    //! Token storage
+    //ToDo: Token storage
   }
 
 
   // checkAuthStatus
-  Future<void> logout( String? errorMessage ) async {}
+  Future<void> logout( String? errorMessage ) async {
+    
+    //ToDo: Logout del server
+    //ToDo: Eliminar token
+
+    // Update the state
+    state = state.copyWith(
+      authStatus: AuthStatus.notAuthenticated,
+      user: null,
+      errorMessage: errorMessage
+    );
+    
+  }
 
 }

@@ -21,7 +21,6 @@ class LoginScreen extends ConsumerWidget {
           upperColor: Colors.deepPurple,
           downsideColor: Colors.deepPurple,
           child: LoginForm()
-          
         ),
       ),
     );    
