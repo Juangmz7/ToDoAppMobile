@@ -15,5 +15,10 @@ class UserRepositoryImpl extends UserRepository{
   Future<String> login(String username, String password) {
     return userDatasource!.login(username, password);
   }
+  
+  @override
+  Future<void> logout() async {
+    userDatasource!.logout();
+  }
 
 }

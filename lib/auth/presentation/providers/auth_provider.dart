@@ -60,7 +60,7 @@ class AuthNotifier extends StateNotifier<AuthState>{
 
       final String token = await userRepository.login(username, password);
 
-      //ToDo: Fetch userRoles
+      //TODO: Fetch userRoles
       
       final user = User(
         username: username,
@@ -73,6 +73,8 @@ class AuthNotifier extends StateNotifier<AuthState>{
 
       // Token storage
       final tokenStorage = FlutterSecureStorage();
+      
+      // Also removes if there is an old token
       await tokenStorage.write(key: 'token', value: token);
 
     }
@@ -91,13 +93,17 @@ class AuthNotifier extends StateNotifier<AuthState>{
 
 
   // checkAuthStatus
-  Future<void> logout( String? errorMessage ) async {
+  Future<void> logout( [String? errorMessage] ) async {
     
-    //ToDo: Logout del server
-    
-    // Token remove
-    final tokenStorage = FlutterSecureStorage();
-    tokenStorage.delete(key: 'token');
+    try {
+
+      // Logout from server
+      await userRepository.logout();
+
+    } catch (e) {
+      throw Exception('Server logout failed');
+    }
+
 
     // Update the state
     state = state.copyWith(

@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_app/auth/presentation/providers/auth_provider.dart';
 import 'package:todo_app/auth/presentation/widgets/login_form.dart';
 import 'package:todo_app/shared/widgets/geometrical_background.dart';
 

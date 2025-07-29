@@ -28,7 +28,7 @@ class LoginForm extends ConsumerWidget {
     ref.listen(authProvider, (previous, next) {
       // Navegation to home screen
       if ( next.authStatus == AuthStatus.authenticated ) {
-        context.go('/home');
+        context.go('/tasks');
       }
 
       if ( next.errorMessage.isEmpty ) return;
