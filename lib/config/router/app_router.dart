@@ -1,7 +1,9 @@
 
 import 'package:go_router/go_router.dart';
+import 'package:todo_app/auth/presentation/screens/forgot_password_screen.dart';
 import 'package:todo_app/auth/presentation/screens/login_screen.dart';
-import 'package:todo_app/home_screen.dart';
+import 'package:todo_app/auth/presentation/screens/register_screen.dart';
+import 'package:todo_app/tasks_screen.dart';
 
 final appRouter = GoRouter(
 
@@ -16,12 +18,23 @@ final appRouter = GoRouter(
     ),
 
     GoRoute(
-      path: '/home',
-      builder: (context, state) => const HomeScreen(),
+      path: '/tasks',
+      builder: (context, state) => const TaskScreen(),
     ),
+    
+    GoRoute(
+      path: '/forgot-password',
+      builder: (context, state) => const ForgotPasswordScreen(),
+    ),
+    
+    GoRoute(
+      path: '/register',
+      builder: (context, state) => const RegisterScreen(),
+    ),
+
   ],
 
-  // redirect: null
+  //ToDo: redirections
 
 
 );
