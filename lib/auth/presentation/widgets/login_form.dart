@@ -4,16 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo_app/auth/presentation/providers/providers.dart';
 import 'package:todo_app/auth/presentation/widgets/custom_text_form_field.dart';
+import 'package:todo_app/auth/state/state.dart';
+import 'package:todo_app/shared/shared.dart';
 
 class LoginForm extends ConsumerWidget {
   const LoginForm({super.key});
-
-    void showSnackbar( BuildContext context, String message ) {
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message))
-      );
-    }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,18 +16,22 @@ class LoginForm extends ConsumerWidget {
     final textStyle = Theme.of(context).textTheme;
     final size = MediaQuery.of(context).size;
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-
     final formProvider = ref.watch(loginFormProvider);
 
     // Shows an error message if not authenticated properly
-    ref.listen(authProvider, (previous, next) {
-      // Navegation to home screen
+    ref.listen(loginAuthProvider, (previous, next) {
+      
       if ( next.authStatus == AuthStatus.authenticated ) {
-        context.go('/tasks');
+        context.push('/tasks');
+      }
+      
+      if( next.errorMessage.isEmpty ||
+          next.authStatus == AuthStatus.authenticated ) {
+        return;
       }
 
-      if ( next.errorMessage.isEmpty ) return;
       showSnackbar( context, next.errorMessage );
+
     });
 
     return SingleChildScrollView(
@@ -48,7 +47,7 @@ class LoginForm extends ConsumerWidget {
         child: Column(
           children: [
 
-            Text('Login', style: textStyle.titleMedium),
+            Text('Login', style: textStyle.titleLarge),
 
             const SizedBox(height: 20,),
 
@@ -87,7 +86,7 @@ class LoginForm extends ConsumerWidget {
 
               },
               style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(Colors.deepPurple), 
+                backgroundColor: WidgetStatePropertyAll(Colors.deepPurple), 
                 foregroundColor: WidgetStatePropertyAll(Colors.white)
               ),
               child: const Text('Ingresar'),
@@ -96,7 +95,7 @@ class LoginForm extends ConsumerWidget {
 
             //* Redirection to forgot_password screen
             TextButton(
-              onPressed: () {}, //ToDo
+              onPressed: () => context.push('/forgot-password'), //ToDo
               child: Text('¿Olvidaste tu contraseña?', style: textStyle.titleSmall)
             ),
 
@@ -109,7 +108,7 @@ class LoginForm extends ConsumerWidget {
 
                 //* Redirection to register_screen
                 TextButton(
-                  onPressed: () {}, //ToDo
+                  onPressed: () => context.push('/register'), 
                   child: Text('Regístrate aquí!', style: TextStyle(color: Colors.blue))
                 )
 

@@ -2,10 +2,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:todo_app/auth/domain/datasource/user_datasoruce.dart';
+import 'package:todo_app/auth/domain/enitites/user.dart';
 
 class UserDatasourceImpl extends UserDatasource{
 
-  Dio _createDio( bool authRequired ) {
+  Dio _createDio( {required bool authRequired} ) {
     
     final dio = Dio(
       BaseOptions(
@@ -44,7 +45,7 @@ class UserDatasourceImpl extends UserDatasource{
     try {
 
       // Login post request
-      final dio = _createDio(false);
+      final dio = _createDio(authRequired: false);
       final response = await dio.post('/login',
         data: {
           'username': username,
@@ -79,7 +80,7 @@ class UserDatasourceImpl extends UserDatasource{
     
     try {
       
-      final dio = _createDio(true);
+      final dio = _createDio(authRequired: true);
       await dio.post('/logout');
 
     } on DioException catch (e) {
@@ -88,8 +89,55 @@ class UserDatasourceImpl extends UserDatasource{
         throw Exception('Revisar conexion a internet');
       }
 
-      throw Exception(e);
+      if( e.type == DioExceptionType.badResponse ) {
+        throw Exception('Error de logout');
+      }
 
+    } catch (e) {
+      throw Exception(e);
+    }
+    
+  }
+
+  @override
+  Future<User> register(String username, String password, String email) async {
+
+    print('$username, $password, $email');
+    
+    try {
+
+      final dio = _createDio(authRequired: false);
+
+      final response = await dio.post('/register',
+        data: {
+          'username': username,
+          'password': password,
+          'email': email
+        }
+      );
+
+      // TODO: Mapper
+      //return response.data;
+      return User(username: username, password: password, token: 'token', roles: ['roles']);
+
+    } on DioException catch (e) {
+
+      if( e.type == DioExceptionType.badResponse ) {
+
+        if ( e.response != null) {
+          final errorMessage = e.response?.data['message'];
+          throw Exception(errorMessage); 
+        }
+
+        throw Exception(e);
+      }
+      
+      if( e.type == DioExceptionType.connectionTimeout ) {
+        throw Exception('Revisar conexion a internet');
+      }
+
+      throw Exception(e);
+      
     } catch (e) {
       throw Exception(e);
     }

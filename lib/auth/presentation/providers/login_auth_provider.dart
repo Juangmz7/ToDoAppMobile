@@ -4,52 +4,26 @@ import 'package:todo_app/auth/domain/enitites/user.dart';
 import 'package:todo_app/auth/domain/infrastructure/repositories/user_repository_impl.dart';
 import 'package:todo_app/auth/domain/repositories/user_repository.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:todo_app/auth/state/state.dart';
 
 
 
-final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
+final loginAuthProvider = StateNotifierProvider<LoginAuthNotifier, LoginAuthState>((ref) {
 
   final UserRepository userRepository = UserRepositoryImpl();
 
-  return AuthNotifier(userRepository: userRepository);
+  return LoginAuthNotifier(userRepository: userRepository);
 });
 
 
-enum AuthStatus { authenticated, checking, notAuthenticated }
 
-class AuthState {
-
-  final AuthStatus authStatus;
-  final User? user;
-  final String errorMessage;
-
-  // Default values
-  AuthState({
-    this.authStatus = AuthStatus.checking,
-    this.user,
-    this.errorMessage = ''
-  });
-
-  AuthState copyWith({
-    AuthStatus? authStatus,
-    User? user,
-    String? errorMessage
-  }) => AuthState(
-    authStatus: authStatus ?? this.authStatus,
-    user: user ?? this.user,
-    errorMessage: errorMessage ?? this.errorMessage 
-  );
-}
-
-
-
-class AuthNotifier extends StateNotifier<AuthState>{
+class LoginAuthNotifier extends StateNotifier<LoginAuthState>{
 
   final UserRepository userRepository;
 
-  AuthNotifier({
+  LoginAuthNotifier({
     required this.userRepository
-  }):super(AuthState());
+  }):super(LoginAuthState());
 
   // User authentication
   Future<void> loginUser( String username, String password ) async {
@@ -79,7 +53,7 @@ class AuthNotifier extends StateNotifier<AuthState>{
 
     }
     catch (e) {
-      logout(e.toString());    
+      _setUserNotAuthenticated(e.toString());    
     }
   }
 
@@ -91,6 +65,15 @@ class AuthNotifier extends StateNotifier<AuthState>{
     );
   }
 
+  void _setUserNotAuthenticated( [ String? errorMessage ]) {
+
+    state = state.copyWith(
+      authStatus: AuthStatus.notAuthenticated,
+      user: null,
+      errorMessage: errorMessage
+    );
+    
+  }
 
   // checkAuthStatus
   Future<void> logout( [String? errorMessage] ) async {
@@ -101,17 +84,11 @@ class AuthNotifier extends StateNotifier<AuthState>{
       await userRepository.logout();
 
     } catch (e) {
-      throw Exception('Server logout failed');
+      throw Exception('Server logout failed: $e');
     }
 
+    _setUserNotAuthenticated();
 
-    // Update the state
-    state = state.copyWith(
-      authStatus: AuthStatus.notAuthenticated,
-      user: null,
-      errorMessage: errorMessage
-    );
-    
   }
 
 }
