@@ -7,7 +7,7 @@ enum AuthStatus {
   checking,
   notAuthenticated,
   registrationSuccess,
-  registrationDenied
+  registrationDenied,
 }
 
 class AuthState {

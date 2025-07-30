@@ -91,4 +91,17 @@ class LoginAuthNotifier extends StateNotifier<LoginAuthState>{
 
   }
 
+  // Sends the user email 
+  Future<void> forgotPassword( String email ) async {
+    
+    try {
+
+      await userRepository.forgotPassword(email);
+
+    } catch (e) {
+      throw Exception('Error al enviar email: $e');
+    }
+    
+  }
+
 }

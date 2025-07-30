@@ -10,7 +10,7 @@ class UserDatasourceImpl extends UserDatasource{
     
     final dio = Dio(
       BaseOptions(
-        baseUrl: 'http://192.168.1.145:8081/auth',
+        baseUrl: 'http://192.168.1.145:8081/auth', // TODO: Crear variable entorno
         connectTimeout: const Duration(seconds: 5),
         receiveTimeout: const Duration(seconds: 5),
       )
@@ -101,8 +101,6 @@ class UserDatasourceImpl extends UserDatasource{
 
   @override
   Future<User> register(String username, String password, String email) async {
-
-    print('$username, $password, $email');
     
     try {
 
@@ -129,7 +127,6 @@ class UserDatasourceImpl extends UserDatasource{
           throw Exception(errorMessage); 
         }
 
-        throw Exception(e);
       }
       
       if( e.type == DioExceptionType.connectionTimeout ) {
@@ -142,6 +139,44 @@ class UserDatasourceImpl extends UserDatasource{
       throw Exception(e);
     }
     
+  }
+  
+  @override
+  Future<void> forgotPassword(String email) async {
+    
+    print(email);
+
+    try {
+
+      final dio = _createDio(authRequired: false);
+
+      await dio.post('/forgot-password',
+        data: {
+          'email': email
+        }
+      );
+
+    } on DioException catch (e) {
+      
+      // Send the status error
+      if( e.type == DioExceptionType.badResponse ) {
+
+        if ( e.response != null) {
+          final errorMessage = e.response?.data['message'];
+          throw Exception(errorMessage); 
+        }
+
+      }      
+
+      if( e.type == DioExceptionType.connectionTimeout ) {
+        throw Exception('Revisar conexion a internet');
+      }
+
+      throw Exception(e);
+
+    } catch (e) {
+      throw Exception(e);
+    }
   }
   
 }

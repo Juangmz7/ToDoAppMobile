@@ -1,5 +1,6 @@
 
 import 'package:go_router/go_router.dart';
+import 'package:todo_app/auth/presentation/screens/email_code_verification_screen.dart';
 import 'package:todo_app/auth/presentation/screens/forgot_password_screen.dart';
 import 'package:todo_app/auth/presentation/screens/login_screen.dart';
 import 'package:todo_app/auth/presentation/screens/register_screen.dart';
@@ -36,6 +37,11 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/register-succedeed',
       builder: (context, state) => const RegisterSucceddedScreen(),
+    ),
+
+    GoRoute(
+      path: '/forgot-password/code-verification',
+      builder: (context, state) => const EmailCodeVerificationScreen(),
     ),
 
   ],

@@ -25,7 +25,11 @@ class UserRepositoryImpl extends UserRepository{
   @override
   Future<User> register(String username, String password, String email) {
     return userDatasource!.register(username, password, email);
-    
+  }
+  
+  @override
+  Future<void> forgotPassword(String email) {
+    return userDatasource!.forgotPassword(email);
   }
 
 }

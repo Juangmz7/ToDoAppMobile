@@ -5,8 +5,10 @@ abstract class UserDatasource {
   
   Future<String> login( String username, String password );
 
-  Future<User> register( String username, String password, String email);
+  Future<User> register( String username, String password, String email );
 
   Future<void> logout();
+
+  Future<void> forgotPassword( String email );
 
 }
