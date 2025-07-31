@@ -1,41 +1,35 @@
 
-import 'package:todo_app/shared/infrastructure/inputs/email.dart';
+import 'package:todo_app/shared/infrastructure/infrastructure.dart';
+
+enum ForgotPasswordStatus {
+  checking,
+  codeValidated,
+  codeNotValidated,
+  passwordAcceptted,
+  passwordNotAcceptted
+}
 
 class ForgotPasswordState {
-  
-  final Email email;
-  final String errorMessage;
-  final bool isPosting;
-  final bool isFormPosted;
-  final bool isValid;
-  final bool isFormSended;
+
+  final ForgotPasswordStatus forgotPasswordStatus;
+  final Password password;
+  final int token;
 
   ForgotPasswordState({
-    this.email = const Email.pure(),
-    this.errorMessage = '',
-    this.isFormPosted = false,
-    this.isPosting = false,
-    this.isValid = false,
-    this.isFormSended = false
+    this.forgotPasswordStatus = ForgotPasswordStatus.checking,
+    this.password = const Password.pure(),
+    this.token = 0
   });
 
   ForgotPasswordState copyWith({
-    Email? email,
-    String? errorMessage,
-    bool? isFormPosted,
-    bool? isPosting,
-    bool? isValid,
-    bool? isFormSended
+    ForgotPasswordStatus? forgotPasswordStatus,
+    Password? password,
+    int? token,
   }) {
     return ForgotPasswordState(
-      email: email ?? this.email,
-      errorMessage: errorMessage ?? this.errorMessage,
-      isFormPosted: isFormPosted ?? this.isFormPosted,
-      isPosting: isPosting ?? this.isPosting,
-      isValid: isValid ?? this.isValid,
-      isFormSended: isFormSended ?? this.isFormSended
+      forgotPasswordStatus: forgotPasswordStatus ?? this.forgotPasswordStatus,
+      password: password ?? this.password,
+      token: token ?? this.token,
     );
   }
-
-
 }

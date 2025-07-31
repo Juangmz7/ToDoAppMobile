@@ -4,23 +4,27 @@ import 'package:todo_app/auth/state/state.dart';
 
 class EmailCodeValidatorFormState extends FormState {
 
-  final double token;
+  final int token;
+  final String errorMessage;
 
   EmailCodeValidatorFormState({
-    required this.token,
+    this.token = 0,
+    this.errorMessage = '',
     super.isFormPosted,
     super.isPosting,
     super.isValid
   });
 
   EmailCodeValidatorFormState copyWith({
-    double? token,
+    int? token,
+    String? errorMessage,
     bool? isFormPosted,
     bool? isPosting,
     bool? isValid,
   }) {
     return EmailCodeValidatorFormState(
       token: token ?? this.token,
+      errorMessage: errorMessage ?? this.errorMessage,
       isFormPosted: isFormPosted ?? this.isFormPosted,
       isPosting: isPosting ?? this.isPosting,
       isValid: isValid ?? this.isValid,

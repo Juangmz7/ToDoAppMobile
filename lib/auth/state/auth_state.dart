@@ -10,7 +10,7 @@ enum AuthStatus {
   registrationDenied,
 }
 
-class AuthState {
+abstract class AuthState {
 
   final AuthStatus authStatus;
   final User? user;
