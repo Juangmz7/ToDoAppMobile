@@ -43,11 +43,7 @@ class EmailCodeValidatorFormNotifier extends StateNotifier<EmailCodeValidatorFor
       isFormPosted: true,
     ); 
 
-    if ( !state.isValid ) {
-      state = state.copyWith(
-        errorMessage: ''
-      );
-    }
+    if ( !state.isValid ) return;
 
     state = state.copyWith(
       isPosting: true

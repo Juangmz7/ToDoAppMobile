@@ -23,6 +23,8 @@ class LoginForm extends ConsumerWidget {
       
       if ( next.authStatus == AuthStatus.authenticated ) {
         context.push('/tasks');
+        ref.read(loginFormProvider.notifier).resetForm();
+        return;
       }
       
       if( next.errorMessage.isEmpty ||
@@ -95,7 +97,7 @@ class LoginForm extends ConsumerWidget {
 
             //* Redirection to forgot_password screen
             TextButton(
-              onPressed: () => context.push('/forgot-password'), //ToDo
+              onPressed: () => context.push('/forgot-password'), 
               child: Text('¿Olvidaste tu contraseña?', style: textStyle.titleSmall)
             ),
 

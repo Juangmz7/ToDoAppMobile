@@ -9,6 +9,9 @@ import 'package:todo_app/auth/state/forgot_password_state.dart';
 import 'package:todo_app/config/config.dart';
 import 'package:todo_app/shared/shared.dart';
 
+
+// This widget is used to create the forgot password form 
+
 class ForgotPasswordForm extends ConsumerStatefulWidget {
   const ForgotPasswordForm({
     super.key,
@@ -90,7 +93,7 @@ class _ForgotPasswordFormState extends ConsumerState<ForgotPasswordForm> {
               
               
             //* Container
-            forgotPasswordForm.isFormSended ? //!&& emailSended ?
+            forgotPasswordForm.isFormSended && emailSended ?
         
             FadeIn(
               animate: true,
@@ -117,7 +120,10 @@ class _ForgotPasswordFormState extends ConsumerState<ForgotPasswordForm> {
                   const SizedBox(height: 20),
 
                   TextButton(
-                    onPressed: () => context.push('/forgot-password/code-verification'),
+                    onPressed: () {
+                      context.push('/forgot-password/code-verification');
+                      ref.read(forgotPasswordFormProvider.notifier).resetForm();
+                    },
                     child: Text(
                       'Verificar código',
                       style: TextStyle(

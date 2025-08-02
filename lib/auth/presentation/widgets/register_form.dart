@@ -23,6 +23,8 @@ class RegisterForm extends ConsumerWidget {
       
       if ( next.authStatus == AuthStatus.registrationSuccess ) {
         context.push('/register-succedeed');
+        ref.read(registerFormProvider.notifier).resetForm();
+        return;
       }
 
       if( next.errorMessage.isEmpty ||

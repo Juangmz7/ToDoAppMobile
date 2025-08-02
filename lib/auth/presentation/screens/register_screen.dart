@@ -9,10 +9,9 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FadeIn(
+    return FadeInRight(
       animate: true,
-      duration: Duration(seconds: 1),
-      //curve: Curves.bounceIn,
+      duration: const Duration(milliseconds: 400),
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: const Scaffold(

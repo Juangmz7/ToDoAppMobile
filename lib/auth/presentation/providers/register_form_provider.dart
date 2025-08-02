@@ -99,6 +99,10 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
     );
       
   }
+
+  resetForm() {
+      state = RegisterFormState();
+    }
   
 }
 

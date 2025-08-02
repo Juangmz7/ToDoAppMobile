@@ -1,14 +1,16 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/auth/presentation/presentation.dart';
 
-class ChangePasswordForm extends StatelessWidget {
+class ChangePasswordForm extends ConsumerWidget {
   const ChangePasswordForm({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
     final textStyle = Theme.of(context).textTheme;
+    final changePasswordForm = ref.watch(changePasswordFormProvider);
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 50),
@@ -22,8 +24,8 @@ class ChangePasswordForm extends StatelessWidget {
             labelText: 'Contraseña',
             hintText: 'Introduzca contraseña',
             obscureText: true,
-            onChanged: null,
-            errorMessage: null,
+            onChanged: ref.read(changePasswordFormProvider.notifier).onPasswordChanged,
+            errorMessage: changePasswordForm.password.errorMessage,
           ),
 
           const SizedBox(height: 20),
@@ -32,17 +34,33 @@ class ChangePasswordForm extends StatelessWidget {
             labelText: 'Repetir contraseña',
             hintText: 'Repita la contraseña',
             obscureText: true,
-            onChanged: null,
-            errorMessage: null,
+            onChanged: ref.read(changePasswordFormProvider.notifier).onRepeteatedPasswordChanged,
+
+            // Show error message if passwords do not match
+            errorMessage: changePasswordForm.isFormPosted ?
+                            ref.read(changePasswordFormProvider.notifier).passwordsMatch() ? 
+                              changePasswordForm.repeteadPassword.errorMessage : 
+                             'Las contraseñas no coinciden'
+                            : null,
+                            
           ),
 
           const SizedBox(height: 20),
           
           FilledButton(
-            onPressed: null,
+            style: ButtonStyle(
+              backgroundColor: WidgetStatePropertyAll(Theme.of(context).primaryColor),
+            ),
+            onPressed: () {
+              
+              // Dismiss the keyboard when the button is pressed
+              FocusManager.instance.primaryFocus?.unfocus();
+              
+              ref.read(changePasswordFormProvider.notifier).onFormSubmitted();
+
+            },
             child: Text('Enviar', style: textStyle.titleSmall,)
           ),
-
         ],
       ),
     );

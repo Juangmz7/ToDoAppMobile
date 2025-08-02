@@ -6,13 +6,15 @@ class ChangePasswordFormState extends FormState {
   
   final Password password;
   final Password repeteadPassword;
+  final String? errorMessage;
 
   ChangePasswordFormState({
     super.isPosting,
     super.isFormPosted,
     super.isValid,
     this.password = const Password.pure(),
-    this.repeteadPassword = const Password.pure()
+    this.repeteadPassword = const Password.pure(),
+    this.errorMessage = '',
   });
 
   ChangePasswordFormState copyWith({

@@ -30,16 +30,16 @@ class ChangePasswordFormNotier extends StateNotifier<ChangePasswordFormState> {
 
     }
 
-    onRepeteatedPasswordChanged() {
+    onRepeteatedPasswordChanged(String value) {
 
-        final newRepeteadPassword = Password.dirty(state.repeteadPassword.value);
+        final newRepeteadPassword = Password.dirty(value);
 
         state = state.copyWith(
             repeteadPassword: newRepeteadPassword,
 
             // It is valid if both passwords match and are valid
             isValid: Formz.validate( [ state.password, newRepeteadPassword ] )
-                        && state.password.value == newRepeteadPassword.value
+                        && passwordsMatch()
         );
 
     }
@@ -68,6 +68,14 @@ class ChangePasswordFormNotier extends StateNotifier<ChangePasswordFormState> {
             isFormPosted: true,
         );
 
+    }
+
+    bool passwordsMatch() {
+        return state.password.value == state.repeteadPassword.value;
+    }
+
+    resetForm() {
+      state = ChangePasswordFormState();
     }
 
 }
