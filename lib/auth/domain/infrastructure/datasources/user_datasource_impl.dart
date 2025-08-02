@@ -216,8 +216,39 @@ class UserDatasourceImpl extends UserDatasource{
   
   @override
   Future<void> changePassword(String password, int token) async {
-    // TODO: implement changePassword
-    throw UnimplementedError();
+    
+    try {
+
+      final dio = _createDio(authRequired: false);
+
+      await dio.post('/change-password',
+        data: {
+          'password': password,
+          'token': token
+        }
+      );
+
+    } on DioException catch (e) {
+      
+      // Send the status error
+      if( e.type == DioExceptionType.badResponse ) {
+
+        if ( e.response != null) {
+          final errorMessage = e.response?.data['message'];
+          throw Exception(errorMessage); 
+        }
+
+      }      
+
+      if( e.type == DioExceptionType.connectionTimeout ) {
+        throw Exception('Revisar conexion a internet');
+      }
+
+      throw Exception(e);
+
+    } catch (e) {
+      throw Exception(e);
+    }
   }
   
 }
