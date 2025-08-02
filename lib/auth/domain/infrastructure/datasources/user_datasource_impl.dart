@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:todo_app/auth/domain/datasource/user_datasoruce.dart';
 import 'package:todo_app/auth/domain/enitites/user.dart';
+import 'package:todo_app/config/app_config.dart';
 
 class UserDatasourceImpl extends UserDatasource{
 
@@ -10,7 +11,7 @@ class UserDatasourceImpl extends UserDatasource{
     
     final dio = Dio(
       BaseOptions(
-        baseUrl: 'http://192.168.1.145:8081/auth', // TODO: Crear variable entorno
+        baseUrl: AppConfig.authUrl, // Ensure the API_URL is set in .env
         connectTimeout: const Duration(seconds: 5),
         receiveTimeout: const Duration(seconds: 5),
       )
