@@ -15,11 +15,11 @@ class RegisterScreen extends StatelessWidget {
       //curve: Curves.bounceIn,
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Scaffold(
+        child: const Scaffold(
           resizeToAvoidBottomInset: false, // To avoid the changes on size because of the keyboard
           body: GeometricalBackground(
-            upperColor: const Color.fromARGB(255, 47, 173, 223),
-            downsideColor: const Color.fromARGB(255, 36, 175, 199),
+            upperColor:  Color.fromARGB(255, 47, 173, 223),
+            downsideColor:  Color.fromARGB(255, 36, 175, 199),
             child: RegisterForm()
           ),
         ),

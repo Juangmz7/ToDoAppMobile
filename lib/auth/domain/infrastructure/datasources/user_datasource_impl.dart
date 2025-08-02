@@ -144,8 +144,6 @@ class UserDatasourceImpl extends UserDatasource{
   @override
   Future<void> forgotPassword(String email) async {
     
-    print(email);
-
     try {
 
       final dio = _createDio(authRequired: false);
@@ -177,6 +175,49 @@ class UserDatasourceImpl extends UserDatasource{
     } catch (e) {
       throw Exception(e);
     }
+  }
+  
+  @override
+  Future<void> checkEmailToken(int token) async {
+    
+    try {
+
+      final dio = _createDio(authRequired: false);
+
+      await dio.get('/validate-reset-token',
+        queryParameters: {
+          'token': token
+        }
+      );
+
+    } on DioException catch (e) {
+      
+      // Send the status error
+      if( e.type == DioExceptionType.badResponse ) {
+
+        if ( e.response != null) {
+          final errorMessage = e.response?.data['message'];
+          throw Exception(errorMessage); 
+        }
+
+      }      
+
+      if( e.type == DioExceptionType.connectionTimeout ) {
+        throw Exception('Revisar conexion a internet');
+      }
+
+      throw Exception(e);
+
+    } catch (e) {
+      throw Exception(e);
+    }
+    
+  }
+  
+  @override
+  Future<void> changePassword(String password, int token) async {
+    // TODO: implement changePassword
+    throw UnimplementedError();
   }
   
 }

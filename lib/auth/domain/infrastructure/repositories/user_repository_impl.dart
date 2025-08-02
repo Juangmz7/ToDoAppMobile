@@ -28,8 +28,18 @@ class UserRepositoryImpl extends UserRepository{
   }
   
   @override
-  Future<void> forgotPassword(String email) {
-    return userDatasource!.forgotPassword(email);
+  Future<void> forgotPassword(String email) async {
+    userDatasource!.forgotPassword(email);
+  }
+  
+  @override
+  Future<void> checkEmailToken(int token) async {
+    userDatasource!.checkEmailToken(token);
+  }
+  
+  @override
+  Future<void> changePassword(String password, int token) async {
+    userDatasource!.changePassword(password, token);
   }
 
 }

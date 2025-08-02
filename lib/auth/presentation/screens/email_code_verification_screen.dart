@@ -1,39 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/auth/presentation/widgets/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_app/auth/presentation/presentation.dart';
+import 'package:todo_app/auth/state/forgot_password_state.dart';
+import 'package:todo_app/shared/functions/show_snackbar.dart';
 
 
-class EmailCodeVerificationScreen extends StatelessWidget {
+class EmailCodeVerificationScreen extends ConsumerStatefulWidget {
   const EmailCodeVerificationScreen({super.key});
 
   @override
+  ConsumerState<EmailCodeVerificationScreen> createState() => _EmailCodeVerificationScreenState();
+}
+
+class _EmailCodeVerificationScreenState extends ConsumerState<EmailCodeVerificationScreen> {
+  @override
   Widget build(BuildContext context) {
 
-    final textStyle = Theme.of(context).textTheme;
+    bool isTokenValid = false;
+
+    ref.listen(forgotPasswordProvider, (previous, next) {
+
+      //* Listener for Token changes
+      if ( next.forgotPasswordStatus == ForgotPasswordStatus.tokenNotValidated ) {
+        showSnackbar(context, next.errorMessage);
+      }
+
+      if ( next.forgotPasswordStatus == ForgotPasswordStatus.tokenValidated ) {
+        isTokenValid = true;
+      }
+      
+      //* Listener for password send
+
+    });
+
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Padding(
-          padding: EdgeInsets.symmetric( vertical: 200),
+          padding: EdgeInsets.symmetric( vertical: 200 ),
           child: Column(
             children: [
-        
-              Text('Código de verificación', style: textStyle.titleMedium),
-        
-              const SizedBox(height: 20),
-        
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 120),
-                child: CustomTextFormField(
-                  labelText: 'Introduce código',
-                  keyboardType: TextInputType.number,
-                ),
-              ),
-        
-              const SizedBox(height: 20),
-        
-              FilledButton(onPressed: () {}, child: Text('Verificar'))
+
+              // If code is not valid, it shows code form
+              // If it is, it shows new password form
+
+              //isTokenValid ?
+
+              const ChangePasswordForm(),
+              
+             // :
+
+              const ForgotPasswordTokenVerificationForm()
               
             ],
           ),

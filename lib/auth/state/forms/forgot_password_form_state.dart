@@ -1,7 +1,7 @@
 
 import 'package:todo_app/shared/infrastructure/inputs/email.dart';
 
-class ForgotPasswordState {
+class ForgotPasswordFormState {
   
   final Email email;
   final String errorMessage;
@@ -10,7 +10,7 @@ class ForgotPasswordState {
   final bool isValid;
   final bool isFormSended;
 
-  ForgotPasswordState({
+  ForgotPasswordFormState({
     this.email = const Email.pure(),
     this.errorMessage = '',
     this.isFormPosted = false,
@@ -19,7 +19,7 @@ class ForgotPasswordState {
     this.isFormSended = false
   });
 
-  ForgotPasswordState copyWith({
+  ForgotPasswordFormState copyWith({
     Email? email,
     String? errorMessage,
     bool? isFormPosted,
@@ -27,7 +27,7 @@ class ForgotPasswordState {
     bool? isValid,
     bool? isFormSended
   }) {
-    return ForgotPasswordState(
+    return ForgotPasswordFormState(
       email: email ?? this.email,
       errorMessage: errorMessage ?? this.errorMessage,
       isFormPosted: isFormPosted ?? this.isFormPosted,

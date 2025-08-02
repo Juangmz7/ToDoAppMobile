@@ -10,7 +10,7 @@ class ForgotPasswordScreen extends StatelessWidget {
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
+      child: const Scaffold(
         resizeToAvoidBottomInset: false,
         body: ForgotPasswordForm(),
       ),

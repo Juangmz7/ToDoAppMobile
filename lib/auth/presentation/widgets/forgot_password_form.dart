@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo_app/auth/presentation/providers/forgot_password_form_provider.dart';
+import 'package:todo_app/auth/presentation/providers/forgot_password_provider.dart';
 import 'package:todo_app/auth/presentation/widgets/widgets.dart';
+import 'package:todo_app/auth/state/forgot_password_state.dart';
 import 'package:todo_app/config/config.dart';
 import 'package:todo_app/shared/shared.dart';
 
@@ -17,8 +19,23 @@ class ForgotPasswordForm extends ConsumerStatefulWidget {
 }
 
 class _ForgotPasswordFormState extends ConsumerState<ForgotPasswordForm> {
+  
   @override
   Widget build(BuildContext context) {
+
+    bool emailSended = false;
+
+    ref.listen(forgotPasswordProvider, (previous, next) {
+      
+      if ( next.forgotPasswordStatus == ForgotPasswordStatus.emailSended ) {
+        emailSended = true;
+      }
+
+      if ( next.forgotPasswordStatus == ForgotPasswordStatus.emailNotSended ) {
+        showSnackbar(context, next.errorMessage);
+      }
+
+    });
 
     final textStyle = Theme.of(context).textTheme;
     final textButtomColor = Theme.of(context).scaffoldBackgroundColor;
@@ -73,7 +90,7 @@ class _ForgotPasswordFormState extends ConsumerState<ForgotPasswordForm> {
               
               
             //* Container
-            forgotPasswordForm.isFormSended ?
+            forgotPasswordForm.isFormSended ? //!&& emailSended ?
         
             FadeIn(
               animate: true,
@@ -89,7 +106,7 @@ class _ForgotPasswordFormState extends ConsumerState<ForgotPasswordForm> {
                       
                     ),
                     child: Text(
-                      'Si la dirección de email es correcta, se le enviará un código de confirmación.',
+                      'Si la dirección está registrada, se le enviará un código de confirmación.',
                       style: TextStyle(
                         fontFamily: textStyle.titleSmall?.fontFamily,
                         color: scaffoldBackgroundColor
@@ -105,7 +122,9 @@ class _ForgotPasswordFormState extends ConsumerState<ForgotPasswordForm> {
                       'Verificar código',
                       style: TextStyle(
                         fontFamily: textStyle.titleSmall?.fontFamily,
-                        color: const Color.fromARGB(255, 30, 171, 247)
+                        color: const Color.fromARGB(255, 30, 171, 247),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18
                       )
                     )
                   )

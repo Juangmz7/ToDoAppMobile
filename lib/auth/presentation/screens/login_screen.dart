@@ -18,7 +18,7 @@ class LoginScreen extends ConsumerWidget {
       duration: Duration(seconds: 1),
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Scaffold(
+        child: const Scaffold(
           resizeToAvoidBottomInset: false, // To avoid the changes on size because of the keyboard
           body: GeometricalBackground(
             upperColor: Colors.deepPurple,
