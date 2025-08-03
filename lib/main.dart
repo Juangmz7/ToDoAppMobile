@@ -7,6 +7,7 @@ import 'package:todo_app/config/theme/app_theme.dart';
 Future<void> main() async {
 
   // Ensure that Flutter is initialized before loading environment variables
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
 
   runApp(
