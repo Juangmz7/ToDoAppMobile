@@ -29,12 +29,23 @@ class EmailCodeValidatorFormNotifier extends StateNotifier<EmailCodeValidatorFor
       isValid: value.isNotEmpty && value.length > 6 
     );
 
-    if ( !state.isValid ) {
-      state = state.copyWith(
-        errorMessage: 'Code must be a possitive integer number'
-      );
+    if ( state.isValid ) return;
+
+    if ( value.isEmpty ) {
+      _setErrorMessage('El código no puede estar vacío');
+    } else if ( value.length < 6 ) {
+      _setErrorMessage('El código debe tener al menos 6 caracteres');
+    } else {
+      _setErrorMessage('Código inválido');
     }
 
+  }
+
+  _setErrorMessage( String message ) {
+
+    state = state.copyWith(
+      errorMessage: message
+    );
   }
 
   onFormSubmmit() {
