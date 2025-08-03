@@ -16,17 +16,17 @@ final emailCodeValidatorFormProvider = StateNotifierProvider<EmailCodeValidatorF
 
 class EmailCodeValidatorFormNotifier extends StateNotifier<EmailCodeValidatorFormState> {
 
-  final Function(int) checkEmailTokenCallback;
+  final Function(String) checkEmailTokenCallback;
 
   EmailCodeValidatorFormNotifier({
     required this.checkEmailTokenCallback
   }):super(EmailCodeValidatorFormState());
 
-   onTokenChanged( int value ) {
+   onTokenChanged( String value ) {
 
     state = state.copyWith(
       token: value,
-      isValid: !value.isNegative && !value.isNaN 
+      isValid: value.isNotEmpty && value.length > 6 
     );
 
     if ( !state.isValid ) {

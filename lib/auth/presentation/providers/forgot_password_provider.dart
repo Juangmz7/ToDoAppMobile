@@ -31,7 +31,7 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState>{
 
       await userRepository.forgotPassword(email);
 
-      _validateTokenStatus();
+      _setEmailSended();
 
     } catch (e) {
       _setEmailNotSended('Error al enviar email: $e');
@@ -39,13 +39,13 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState>{
     
   }
 
-  Future<void> checkEmailToken( int token ) async {
+  Future<void> checkEmailToken( String token ) async {
 
     try {
 
       await userRepository.checkEmailToken(token);
 
-      _setEmailSended();
+      _validateTokenStatus();
 
     } catch (e) {
       _invalidateTokenStatus('Error en la validación del token: $e');

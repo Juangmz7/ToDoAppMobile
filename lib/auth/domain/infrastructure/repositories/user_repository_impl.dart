@@ -33,7 +33,7 @@ class UserRepositoryImpl extends UserRepository{
   }
   
   @override
-  Future<void> checkEmailToken(int token) async {
+  Future<void> checkEmailToken(String token) async {
     userDatasource!.checkEmailToken(token);
   }
   

@@ -11,7 +11,7 @@ abstract class UserRepository {
 
   Future<void> forgotPassword( String email );
 
-  Future<void> checkEmailToken( int token );
+  Future<void> checkEmailToken( String token );
 
   Future<void> changePassword( String password, int token );
 

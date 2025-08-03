@@ -51,7 +51,7 @@ class UserDatasourceImpl extends UserDatasource{
         data: {
           'username': username,
           'password': password
-        }
+        }, 
       );
 
       // The data response contains the token
@@ -179,7 +179,7 @@ class UserDatasourceImpl extends UserDatasource{
   }
   
   @override
-  Future<void> checkEmailToken(int token) async {
+  Future<void> checkEmailToken(String token) async {
     
     try {
 

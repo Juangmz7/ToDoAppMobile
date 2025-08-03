@@ -9,6 +9,7 @@ class ForgotPasswordTokenVerificationForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final textStyle = Theme.of(context).textTheme;
+    final emailCodeValidatorForm = ref.watch(emailCodeValidatorFormProvider);
 
     return Column(
       children: [
@@ -21,6 +22,10 @@ class ForgotPasswordTokenVerificationForm extends ConsumerWidget {
                 child: CustomTextFormField(
                   labelText: 'Introduce código',
                   keyboardType: TextInputType.number,
+                  onChanged: ref.read(emailCodeValidatorFormProvider.notifier).onTokenChanged,
+                  errorMessage: emailCodeValidatorForm.isFormPosted ?
+                                  emailCodeValidatorForm.errorMessage :
+                                  null,
                 ),
               ),
         
@@ -30,7 +35,7 @@ class ForgotPasswordTokenVerificationForm extends ConsumerWidget {
                 
                   FocusManager.instance.primaryFocus?.unfocus();
 
-                  ref.read(forgotPasswordProvider.notifier).checkEmailToken;
+                  ref.read(emailCodeValidatorFormProvider.notifier).onFormSubmmit();
 
                 },
                 child: Text('Verificar')

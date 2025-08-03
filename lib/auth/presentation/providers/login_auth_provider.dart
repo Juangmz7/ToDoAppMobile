@@ -51,6 +51,11 @@ class LoginAuthNotifier extends StateNotifier<LoginAuthState>{
       // Also removes if there is an old token
       await tokenStorage.write(key: 'token', value: token);
 
+      final expiration = DateTime.now().add(const Duration(minutes: 30));
+
+      // Store the expiration time
+      await tokenStorage.write(key: 'token_expiration', value: expiration.toIso8601String());
+
     }
     catch (e) {
       _setUserNotAuthenticated(e.toString());    
@@ -82,12 +87,16 @@ class LoginAuthNotifier extends StateNotifier<LoginAuthState>{
 
       // Logout from server
       await userRepository.logout();
+      _setUserNotAuthenticated();
 
     } catch (e) {
-      throw Exception('Server logout failed: $e');
+
+      state = state.copyWith(
+        errorMessage: e.toString()
+      );
+
     }
 
-    _setUserNotAuthenticated();
 
   }
 
