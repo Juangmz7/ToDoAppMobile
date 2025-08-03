@@ -18,7 +18,7 @@ class ForgotPasswordTokenVerificationForm extends ConsumerWidget {
               const SizedBox(height: 20),
         
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 120),
+                padding: EdgeInsets.symmetric(horizontal: 60),
                 child: CustomTextFormField(
                   labelText: 'Introduce código',
                   keyboardType: TextInputType.number,
@@ -31,7 +31,7 @@ class ForgotPasswordTokenVerificationForm extends ConsumerWidget {
         
         
               FilledButton(
-                onPressed: () {
+                onPressed:  emailCodeValidatorForm.isPosting ? null : () {
                 
                   FocusManager.instance.primaryFocus?.unfocus();
 

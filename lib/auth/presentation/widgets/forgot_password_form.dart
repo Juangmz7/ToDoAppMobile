@@ -121,7 +121,7 @@ class _ForgotPasswordFormState extends ConsumerState<ForgotPasswordForm> {
                     const SizedBox(height: 20),
       
                     TextButton(
-                      onPressed: () {
+                      onPressed: forgotPasswordForm.isPosting ? null : () {
                         context.push('/forgot-password/code-verification');
                         ref.read(forgotPasswordFormProvider.notifier).resetForm();
                       },

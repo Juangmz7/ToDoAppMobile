@@ -51,7 +51,7 @@ class ChangePasswordForm extends ConsumerWidget {
             style: ButtonStyle(
               backgroundColor: WidgetStatePropertyAll(Theme.of(context).primaryColor),
             ),
-            onPressed: () {
+            onPressed: changePasswordForm.isPosting ? null : () {
               
               // Dismiss the keyboard when the button is pressed
               FocusManager.instance.primaryFocus?.unfocus();
