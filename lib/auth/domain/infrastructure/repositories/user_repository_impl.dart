@@ -19,7 +19,7 @@ class UserRepositoryImpl extends UserRepository{
   
   @override
   Future<void> logout() async {
-    userDatasource.logout();
+    await userDatasource.logout();
   }
 
   @override
@@ -29,7 +29,7 @@ class UserRepositoryImpl extends UserRepository{
   
   @override
   Future<void> forgotPassword(String email) async {
-    userDatasource.forgotPassword(email);
+    await userDatasource.forgotPassword(email);
   }
   
   @override
@@ -39,7 +39,7 @@ class UserRepositoryImpl extends UserRepository{
   
   @override
   Future<void> changePassword(String password, String token) async {
-    userDatasource.changePassword(password, token);
+    await userDatasource.changePassword(password, token);
   }
 
 }
