@@ -216,17 +216,17 @@ class UserDatasourceImpl extends UserDatasource{
   }
   
   @override
-  Future<void> changePassword(String password, int token) async {
+  Future<void> changePassword(String password, String token) async {
     
     try {
 
       final dio = _createDio(authRequired: false);
 
       await dio.post('/change-password',
-        data: {
+        queryParameters: {
           'password': password,
           'token': token
-        }
+        },
       );
 
     } on DioException catch (e) {

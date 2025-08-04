@@ -13,5 +13,5 @@ abstract class UserDatasource {
 
   Future<void> checkEmailToken( String token );
 
-  Future<void> changePassword( String password, int token );
+  Future<void> changePassword( String password, String token );
 }

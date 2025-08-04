@@ -38,7 +38,7 @@ class UserRepositoryImpl extends UserRepository{
   }
   
   @override
-  Future<void> changePassword(String password, int token) async {
+  Future<void> changePassword(String password, String token) async {
     userDatasource!.changePassword(password, token);
   }
 

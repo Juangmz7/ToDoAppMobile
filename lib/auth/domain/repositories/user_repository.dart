@@ -13,6 +13,6 @@ abstract class UserRepository {
 
   Future<void> checkEmailToken( String token );
 
-  Future<void> changePassword( String password, int token );
+  Future<void> changePassword( String password, String token );
 
 }
