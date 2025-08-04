@@ -40,109 +40,101 @@ class _ForgotPasswordFormState extends ConsumerState<ForgotPasswordForm> {
     final size = MediaQuery.of(context).size;
     final forgotPasswordForm = ref.watch(forgotPasswordFormProvider);
 
-    return PopScope(
-      onPopInvokedWithResult: (context, result) {
-        if (context == true) {
-          ref.read(forgotPasswordFormProvider.notifier).resetForm();
-        }
-      },
-      child: GeometricalBackground(
-        upperColor: Colors.white,
-        downsideColor: Colors.white,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 50),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-                
-              Text('Recupera tu contraseña', style: textStyle.titleMedium),
-                
-              const SizedBox(height: 20),
-                
-              CustomTextFormField(
-                labelText: 'Email',
-                hintText: 'Introduce email',
-                onChanged: ref.read(forgotPasswordFormProvider.notifier).onEmailChanged,
-                errorMessage: forgotPasswordForm.isFormPosted
-                              ? forgotPasswordForm.email.errorMessage
-                              : null,
+    return GeometricalBackground(
+      upperColor: Colors.white,
+      downsideColor: Colors.white,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 50),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+              
+            Text('Recupera tu contraseña', style: textStyle.titleMedium),
+              
+            const SizedBox(height: 20),
+              
+            CustomTextFormField(
+              labelText: 'Email',
+              hintText: 'Introduce email',
+              onChanged: ref.read(forgotPasswordFormProvider.notifier).onEmailChanged,
+              errorMessage: forgotPasswordForm.isFormPosted
+                            ? forgotPasswordForm.email.errorMessage
+                            : null,
+            ),
+            
+            
+            const SizedBox(height: 10),
+            
+            //* Subbmit button
+            FilledButton(
+              style: ButtonStyle(
+                foregroundColor: WidgetStatePropertyAll(textButtomColor),
+                backgroundColor: WidgetStatePropertyAll(Colors.white)
               ),
-              
-              
-              const SizedBox(height: 10),
-              
-              //* Subbmit button
-              FilledButton(
-                style: ButtonStyle(
-                  foregroundColor: WidgetStatePropertyAll(textButtomColor),
-                  backgroundColor: WidgetStatePropertyAll(Colors.white)
-                ),
-                onPressed: forgotPasswordForm.isPosting ? null
-                 : () {
-                  
-                  // Hide the keyboard
-                  FocusManager.instance.primaryFocus?.unfocus();
-                  
-                  // Subbmit
-                  ref.read(forgotPasswordFormProvider.notifier).onFormSubmitted();
-          
-                },
-                child: Text('Enviar'),
-              ),
-      
-              const SizedBox(height: 40),
+              onPressed: forgotPasswordForm.isPosting ? null
+               : () {
                 
+                // Hide the keyboard
+                FocusManager.instance.primaryFocus?.unfocus();
                 
-              //* Container
-              forgotPasswordForm.isFormSended ?
-          
-              FadeIn(
-                animate: true,
-                duration: Duration(seconds: 1),
-                delay: Duration(seconds: 1),
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(size.width*0.05),
-                        
-                      ),
-                      child: Text(
-                        'Si la dirección está registrada, se le enviará un código de confirmación.',
-                        style: TextStyle(
-                          fontFamily: textStyle.titleSmall?.fontFamily,
-                          color: scaffoldBackgroundColor
-                        ),
+                // Subbmit
+                ref.read(forgotPasswordFormProvider.notifier).onFormSubmitted();
+        
+              },
+              child: Text('Enviar'),
+            ),
+    
+            const SizedBox(height: 40),
+              
+              
+            //* Container
+            forgotPasswordForm.isFormSended ?
+        
+            FadeIn(
+              animate: true,
+              duration: Duration(seconds: 1),
+              delay: Duration(seconds: 1),
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(size.width*0.05),
+                      
+                    ),
+                    child: Text(
+                      'Si la dirección está registrada, se le enviará un código de confirmación.',
+                      style: TextStyle(
+                        fontFamily: textStyle.titleSmall?.fontFamily,
+                        color: scaffoldBackgroundColor
                       ),
                     ),
-      
-                    const SizedBox(height: 20),
-      
-                    TextButton(
-                      onPressed: forgotPasswordForm.isPosting ? null : () {
-                        context.push('/forgot-password/code-verification');
-                        ref.read(forgotPasswordFormProvider.notifier).resetForm();
-                      },
-                      child: Text(
-                        'Verificar código',
-                        style: TextStyle(
-                          fontFamily: textStyle.titleSmall?.fontFamily,
-                          color: const Color.fromARGB(255, 30, 171, 247),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18
-                        )
+                  ),
+    
+                  const SizedBox(height: 20),
+    
+                  TextButton(
+                    onPressed: forgotPasswordForm.isPosting ? null : () {
+                      context.push('/forgot-password/code-verification');
+                    },
+                    child: Text(
+                      'Verificar código',
+                      style: TextStyle(
+                        fontFamily: textStyle.titleSmall?.fontFamily,
+                        color: const Color.fromARGB(255, 30, 171, 247),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18
                       )
                     )
-                  ],
-                ),
-              )
-          
-              : SizedBox(),
-              
-            ],
-          ),
+                  )
+                ],
+              ),
+            )
+        
+            : SizedBox(),
+            
+          ],
         ),
       ),
     );

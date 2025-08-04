@@ -23,7 +23,6 @@ class LoginForm extends ConsumerWidget {
       
       if ( next.authStatus == AuthStatus.authenticated ) {
         context.push('/tasks');
-        ref.read(loginFormProvider.notifier).resetForm();
         return;
       }
       
