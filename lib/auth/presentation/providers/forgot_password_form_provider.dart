@@ -60,4 +60,8 @@ class ForgotPasswordFormNotifier extends StateNotifier<ForgotPasswordFormState> 
     );
   }
 
+  resetForm() {
+    state = ForgotPasswordFormState();
+  }
+
 }
