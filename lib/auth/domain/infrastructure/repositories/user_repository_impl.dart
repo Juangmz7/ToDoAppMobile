@@ -6,7 +6,7 @@ import 'package:todo_app/auth/domain/repositories/user_repository.dart';
 
 class UserRepositoryImpl extends UserRepository{
 
-  final UserDatasource? userDatasource;
+  final UserDatasource userDatasource;
 
   UserRepositoryImpl({
     UserDatasource? userDatasource
@@ -14,32 +14,32 @@ class UserRepositoryImpl extends UserRepository{
 
   @override
   Future<String> login(String username, String password) {
-    return userDatasource!.login(username, password);
+    return userDatasource.login(username, password);
   }
   
   @override
   Future<void> logout() async {
-    userDatasource!.logout();
+    userDatasource.logout();
   }
 
   @override
   Future<User> register(String username, String password, String email) {
-    return userDatasource!.register(username, password, email);
+    return userDatasource.register(username, password, email);
   }
   
   @override
   Future<void> forgotPassword(String email) async {
-    userDatasource!.forgotPassword(email);
+    userDatasource.forgotPassword(email);
   }
   
   @override
   Future<void> checkEmailToken(String token) async {
-    userDatasource!.checkEmailToken(token);
+    await userDatasource.checkEmailToken(token);
   }
   
   @override
   Future<void> changePassword(String password, String token) async {
-    userDatasource!.changePassword(password, token);
+    userDatasource.changePassword(password, token);
   }
 
 }
