@@ -1,9 +1,8 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_app/auth/domain/enitites/user.dart';
-import 'package:todo_app/auth/domain/infrastructure/repositories/user_repository_impl.dart';
-import 'package:todo_app/auth/domain/repositories/user_repository.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import 'package:todo_app/auth/domain/domain.dart';
 import 'package:todo_app/auth/state/state.dart';
 
 

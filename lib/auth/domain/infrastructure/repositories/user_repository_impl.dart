@@ -1,7 +1,6 @@
 
-import 'package:todo_app/auth/domain/datasource/user_datasoruce.dart';
-import 'package:todo_app/auth/domain/infrastructure/datasources/user_datasource_impl.dart';
-import 'package:todo_app/auth/domain/repositories/user_repository.dart';
+
+import 'package:todo_app/auth/domain/domain.dart';
 
 class UserRepositoryImpl extends UserRepository{
 

@@ -2,9 +2,9 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:todo_app/auth/presentation/providers/forgot_password_form_provider.dart';
-import 'package:todo_app/auth/presentation/providers/forgot_password_provider.dart';
-import 'package:todo_app/auth/presentation/widgets/widgets.dart';
+import 'package:todo_app/auth/presentation/presentation.dart';
+
+
 import 'package:todo_app/auth/state/forgot_password_state.dart';
 import 'package:todo_app/config/config.dart';
 import 'package:todo_app/shared/shared.dart';

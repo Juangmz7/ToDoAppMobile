@@ -1,10 +1,8 @@
 
 import 'package:go_router/go_router.dart';
-import 'package:todo_app/auth/presentation/screens/email_code_verification_screen.dart';
-import 'package:todo_app/auth/presentation/screens/forgot_password_screen.dart';
-import 'package:todo_app/auth/presentation/screens/login_screen.dart';
-import 'package:todo_app/auth/presentation/screens/register_screen.dart';
-import 'package:todo_app/auth/presentation/screens/register_succedded_screen.dart';
+import 'package:todo_app/auth/presentation/presentation.dart';
+
+
 import 'package:todo_app/tasks_screen.dart';
 
 final appRouter = GoRouter(

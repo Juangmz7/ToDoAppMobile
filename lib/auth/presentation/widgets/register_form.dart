@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:todo_app/auth/presentation/providers/providers.dart';
-import 'package:todo_app/auth/presentation/widgets/widgets.dart';
+import 'package:todo_app/auth/presentation/presentation.dart';
+
+
 import 'package:todo_app/auth/state/state.dart';
 import 'package:todo_app/shared/functions/functions.dart';
 
