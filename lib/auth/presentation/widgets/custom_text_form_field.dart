@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomTextFormField extends StatelessWidget {
+class CustomTextFormField extends StatefulWidget {
 
   final Icon? prefixIcon;
   final String? labelText;
@@ -28,6 +28,15 @@ class CustomTextFormField extends StatelessWidget {
   });
 
   @override
+  State<CustomTextFormField> createState() => _CustomTextFormFieldState();
+}
+
+class _CustomTextFormFieldState extends State<CustomTextFormField> {
+    
+  // State variable to toggle visibility of the password field
+  bool isShowingField = false;
+
+  @override
   Widget build(BuildContext context) {
 
     final border = OutlineInputBorder(
@@ -51,25 +60,33 @@ class CustomTextFormField extends StatelessWidget {
       ),
       child: TextFormField(
         decoration: InputDecoration(
-          prefixIcon: prefixIcon,
-          labelText: labelText,
-          labelStyle: errorMessage != null ? TextStyle(color: Colors.red) : null,
-          hintText: hintText,
-          filled: filled,
+          prefixIcon: widget.prefixIcon,
+          labelText: widget.labelText,
+          labelStyle: widget.errorMessage != null ? TextStyle(color: Colors.red) : null,
+          hintText: widget.hintText,
+          filled: widget.filled,
           isDense: true,
           enabledBorder: border,
           focusedBorder: border,
           errorBorder: border.copyWith(borderSide: BorderSide(color: Colors.red)),
           focusedErrorBorder: border.copyWith( borderSide: const BorderSide( color: Colors.red )),
-          errorText: errorMessage,
+          errorText: widget.errorMessage,
           errorStyle: TextStyle(color: Colors.red),
-          focusColor: colors.primary
+          focusColor: colors.primary,
+          suffixIcon:  widget.obscureText ? IconButton(
+            onPressed: () => setState(() => isShowingField = !isShowingField),
+            icon: isShowingField ? Icon(Icons.visibility_rounded, color: Colors.grey, size: 20)
+                                 : Icon(Icons.visibility_off_rounded, color: Colors.grey, size: 20)
+          )
+          : null,
+
         ),
-        obscureText: obscureText,
-        onChanged: onChanged,
-        validator: validator,
-        keyboardType: keyboardType,
+        onChanged: widget.onChanged,
+        validator: widget.validator,
+        keyboardType: widget.keyboardType,
         style: textStyle.titleSmall,
+        obscureText: widget.obscureText && !isShowingField,
+
         
       ),
     );
