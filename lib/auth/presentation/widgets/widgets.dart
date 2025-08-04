@@ -4,3 +4,4 @@ export '../widgets/register_form.dart';
 export '../widgets/forgot_password_form.dart';
 export '../widgets/forgot_password_token_verification_form.dart';
 export 'change_password_form.dart';
+export 'custom_succedeed_screen.dart';

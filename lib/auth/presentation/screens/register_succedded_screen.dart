@@ -1,52 +1,26 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:lottie/lottie.dart';
+import 'package:todo_app/auth/presentation/widgets/widgets.dart';
 
 
-class RegisterSucceddedScreen extends StatelessWidget {
+
+class RegisterSucceddedScreen extends StatefulWidget {
   const RegisterSucceddedScreen({super.key});
 
-  //TODO: Agregar loading screen para las redirecciones
+  @override
+  State<RegisterSucceddedScreen> createState() => _RegisterSucceddedScreenState();
+}
 
+class _RegisterSucceddedScreenState extends State<RegisterSucceddedScreen> {
   @override
   Widget build(BuildContext context) {
-
-    final textStyle = Theme.of(context).textTheme;
-    final size = MediaQuery.of(context).size;
-
     return FadeInRight(
       duration: const Duration(milliseconds: 400),
-      child: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('¡Cuenta registrada correctamente!', style: textStyle.titleSmall),
-          
-              const SizedBox(height: 20),
-      
-              LottieBuilder.asset(
-                'assets/animations/forgot_password_animation.json',
-                repeat: true,
-                width: size.width*0.5,
-                height: size.height*0.3,
-              ),
-      
-              const SizedBox(height: 30),
-      
-              FilledButton(
-                style: ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(const Color.fromARGB(255, 71, 132, 238))
-                ),
-                onPressed: () => context.push('/login'),
-                child: Text('Volver a inicio de sesión', style: textStyle.titleSmall)
-              ),
-          
-            ],
-          ),
-        ),
-      ),
+      child: CustomSuccedeedScreen(
+        title: 'Se ha registrado correctamente',
+        animationPath: 'assets/animations/forgot_password_animation.json',
+        redirectPath: '/login',
+      )
     );
   }
 }
