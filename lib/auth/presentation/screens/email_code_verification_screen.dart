@@ -18,7 +18,7 @@ class _EmailCodeVerificationScreenState extends ConsumerState<EmailCodeVerificat
   @override
   Widget build(BuildContext context) {
 
-    bool isTokenValid = false;
+    bool isTokenValid = ref.watch(forgotPasswordProvider).forgotPasswordStatus == ForgotPasswordStatus.tokenValidated;
 
     ref.listen(forgotPasswordProvider, (previous, next) async {
 
@@ -27,29 +27,26 @@ class _EmailCodeVerificationScreenState extends ConsumerState<EmailCodeVerificat
         showSnackbar(context, next.errorMessage);
         return;
       }
-
-      if ( next.forgotPasswordStatus == ForgotPasswordStatus.tokenValidated ) {
-        isTokenValid = true;
-        return;
-      }
       
       //* Listener for password send
-      if ( next.forgotPasswordStatus == ForgotPasswordStatus.passwordAcceptted ) {
-        
-        // Navigate to login page after successful password change
-        context.push('/auth/login');
-        ref.read(changePasswordFormProvider.notifier).resetForm();
-        ref.read(forgotPasswordFormProvider.notifier).resetForm();
-        return;
-
-      }
-
       if ( next.forgotPasswordStatus == ForgotPasswordStatus.passwordNotAcceptted ) {
         
         showSnackbar(context, 'Error al cambiar la contraseña: ${next.errorMessage}');
         return;
        
       }
+      
+      //* Listener for password send
+      if ( next.forgotPasswordStatus == ForgotPasswordStatus.passwordAcceptted ) {
+        
+        // Navigate to login page after successful password change
+        context.push('/login');
+        showSnackbar(context, 'Contraseña modificada correctamente');
+
+        return;
+
+      }
+
 
     });
 
