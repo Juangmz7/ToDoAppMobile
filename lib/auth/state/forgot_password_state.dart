@@ -15,20 +15,20 @@ class ForgotPasswordState {
 
   final ForgotPasswordStatus forgotPasswordStatus;
   final Password password;
-  final int token;
+  final String token;
   final String errorMessage;
 
   ForgotPasswordState({
     this.forgotPasswordStatus = ForgotPasswordStatus.checking,
     this.password = const Password.pure(),
-    this.token = 0,
+    this.token = '',
     this.errorMessage = ''
   });
 
   ForgotPasswordState copyWith({
     ForgotPasswordStatus? forgotPasswordStatus,
     Password? password,
-    int? token,
+    String? token,
     String? errorMessage
   }) {
     return ForgotPasswordState(
