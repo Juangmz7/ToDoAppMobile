@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:todo_app/auth/presentation/presentation.dart';
 
 
-import 'package:todo_app/tasks_screen.dart';
+import 'package:todo_app/presentation/screens/tasks_screen.dart';
 
 final appRouter = GoRouter(
 
