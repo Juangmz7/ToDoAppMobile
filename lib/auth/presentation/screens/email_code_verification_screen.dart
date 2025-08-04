@@ -42,7 +42,7 @@ class _EmailCodeVerificationScreenState extends ConsumerState<EmailCodeVerificat
         
         // Navigate to login page after successful password change
         context.push('/login');
-        showSnackbar(context, 'Contraseña modificada correctamente');
+        showSnackbar(context, 'Contraseña modificada correctamente', Colors.green);
         ref.read(forgotPasswordFormProvider.notifier).resetForm();
 
         return;

@@ -53,7 +53,8 @@ class ChangePasswordForm extends ConsumerWidget {
             
             FilledButton(
               style: ButtonStyle(
-                foregroundColor: WidgetStatePropertyAll(Theme.of(context).primaryColor),
+                foregroundColor: WidgetStatePropertyAll(Theme.of(context).scaffoldBackgroundColor),
+                
               ),
               onPressed: changePasswordForm.isPosting ? null : () {
                 
@@ -63,7 +64,7 @@ class ChangePasswordForm extends ConsumerWidget {
                 ref.read(changePasswordFormProvider.notifier).onFormSubmitted();
       
               },
-              child: Text('Enviar', style: textStyle.titleSmall,)
+              child: Text('Enviar')
             ),
           ],
         ),
