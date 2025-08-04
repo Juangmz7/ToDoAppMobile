@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:todo_app/auth/domain/domain.dart';
 import 'package:todo_app/auth/state/state.dart';
+import 'package:todo_app/shared/functions/format_exception.dart';
 
 
 
@@ -57,7 +58,7 @@ class LoginAuthNotifier extends StateNotifier<LoginAuthState>{
 
     }
     catch (e) {
-      _setUserNotAuthenticated(e.toString());    
+      _setUserNotAuthenticated(formatException(e.toString()));    
     }
   }
 

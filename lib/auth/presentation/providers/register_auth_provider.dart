@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:todo_app/auth/domain/domain.dart';
 import 'package:todo_app/auth/state/state.dart';
+import 'package:todo_app/shared/functions/format_exception.dart';
 
 final registerAuthProvider = StateNotifierProvider.autoDispose<RegisterAuthNotifier, RegisterAuthState>((ref) {
 
@@ -49,7 +50,7 @@ class RegisterAuthNotifier extends StateNotifier<RegisterAuthState>{
       _setRegistrationStateAccepted();
 
     } catch (e) {
-      _setRegistrationStateDenied(e.toString());
+      _setRegistrationStateDenied(formatException(e.toString()));
     }
 
   }

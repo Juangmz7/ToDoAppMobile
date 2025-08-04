@@ -3,6 +3,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/auth/domain/domain.dart';
 
+import 'package:todo_app/shared/functions/format_exception.dart';
 import '../../state/forgot_password_state.dart';
 
 
@@ -34,7 +35,7 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState>{
       _setEmailSended();
 
     } catch (e) {
-      _setEmailNotSended('Error al enviar email: $e');
+      _setEmailNotSended(formatException(e.toString()));
     }
     
   }
@@ -47,7 +48,7 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState>{
       _validateTokenStatus(token);
 
     } catch (e) {
-      _invalidateTokenStatus('Error en la validación del token: $e');
+      _invalidateTokenStatus(formatException(e.toString()));
     }
 
   }
@@ -61,7 +62,7 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState>{
       _validPasswordChange();
 
     } catch (e) {
-      _invalidPasswordChange(e.toString());
+      _invalidPasswordChange(formatException(e.toString()));
     }
 
   }
