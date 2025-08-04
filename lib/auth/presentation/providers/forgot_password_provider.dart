@@ -44,14 +44,11 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState>{
     try {
 
       await userRepository.checkEmailToken(token);
-
+      _validateTokenStatus(token);
 
     } catch (e) {
       _invalidateTokenStatus('Error en la validación del token: $e');
-      return;
     }
-
-    _validateTokenStatus(token);
 
   }
 
@@ -61,13 +58,11 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState>{
       
       // Server call
       await userRepository.changePassword(password, state.token);
+      _validPasswordChange();
 
     } catch (e) {
       _invalidPasswordChange(e.toString());
-      return;
     }
-
-      _validPasswordChange();
 
   }
 
