@@ -77,9 +77,6 @@ class LoginFormNotifier extends StateNotifier<LoginFormState>{
 
   } 
 
-  resetForm() {
-      state = LoginFormState();
-    }
 }
 
 

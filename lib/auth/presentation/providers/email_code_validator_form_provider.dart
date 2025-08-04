@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/auth/presentation/providers/providers.dart';
 import 'package:todo_app/auth/state/state.dart';
 
-final emailCodeValidatorFormProvider = StateNotifierProvider<EmailCodeValidatorFormNotifier, EmailCodeValidatorFormState>(
+final emailCodeValidatorFormProvider = StateNotifierProvider.autoDispose<EmailCodeValidatorFormNotifier, EmailCodeValidatorFormState>(
   (ref) {
 
     final checkEmailTokenCallback = ref.watch(forgotPasswordProvider.notifier).checkEmailToken;
@@ -35,8 +35,6 @@ class EmailCodeValidatorFormNotifier extends StateNotifier<EmailCodeValidatorFor
       _setErrorMessage('El código no puede estar vacío');
     } else if ( value.length < 6 ) {
       _setErrorMessage('El código debe tener al menos 6 caracteres');
-    } else {
-      _setErrorMessage('Código inválido');
     }
 
   }
@@ -48,7 +46,7 @@ class EmailCodeValidatorFormNotifier extends StateNotifier<EmailCodeValidatorFor
     );
   }
 
-  onFormSubmmit() {
+  onFormSubmmit() async {
     
     state = state.copyWith(
       isFormPosted: true,
@@ -60,7 +58,7 @@ class EmailCodeValidatorFormNotifier extends StateNotifier<EmailCodeValidatorFor
       isPosting: true
     );
 
-    checkEmailTokenCallback(state.token);
+    await checkEmailTokenCallback(state.token);
 
     state = state.copyWith(
       isPosting: false

@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/auth/domain/domain.dart';
 import 'package:todo_app/auth/state/state.dart';
 
-final registerAuthProvider = StateNotifierProvider<RegisterAuthNotifier, RegisterAuthState>((ref) {
+final registerAuthProvider = StateNotifierProvider.autoDispose<RegisterAuthNotifier, RegisterAuthState>((ref) {
 
   final UserRepository userRepository = UserRepositoryImpl();
 

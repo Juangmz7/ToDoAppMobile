@@ -5,7 +5,7 @@ import 'package:todo_app/auth/state/forms/forms.dart';
 import 'package:todo_app/shared/infrastructure/infrastructure.dart';
 
 // This provider is used to manage the state of the change password form.
-final changePasswordFormProvider = StateNotifierProvider<ChangePasswordFormNotier, ChangePasswordFormState>(
+final changePasswordFormProvider = StateNotifierProvider.autoDispose<ChangePasswordFormNotier, ChangePasswordFormState>(
   (ref) => ChangePasswordFormNotier(
     changePasswordCallback: ref.watch(forgotPasswordProvider.notifier).changePassword,
   ),
@@ -44,14 +44,14 @@ class ChangePasswordFormNotier extends StateNotifier<ChangePasswordFormState> {
 
     }
 
-    onFormSubmitted() {
+    onFormSubmitted() async {
         _touchEveryField();
 
         if (!state.isValid) return;
 
         state = state.copyWith(isPosting: true);
 
-        changePasswordCallback(state.password.value);
+        await changePasswordCallback(state.password.value);
 
         state = state.copyWith(isPosting: false);
     }
@@ -74,8 +74,5 @@ class ChangePasswordFormNotier extends StateNotifier<ChangePasswordFormState> {
         return state.password.value == state.repeteadPassword.value;
     }
 
-    resetForm() {
-      state = ChangePasswordFormState();
-    }
 
 }

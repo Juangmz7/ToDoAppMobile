@@ -6,7 +6,7 @@ import 'package:todo_app/auth/presentation/presentation.dart';
 import 'package:todo_app/auth/state/forms/forgot_password_form_state.dart';
 import 'package:todo_app/shared/shared.dart';
 
-final forgotPasswordFormProvider = StateNotifierProvider<ForgotPasswordFormNotifier, ForgotPasswordFormState>(
+final forgotPasswordFormProvider = StateNotifierProvider.autoDispose<ForgotPasswordFormNotifier, ForgotPasswordFormState>(
   (ref) {
 
     // Forgot password server communication
@@ -59,9 +59,5 @@ class ForgotPasswordFormNotifier extends StateNotifier<ForgotPasswordFormState> 
       isFormPosted: true
     );
   }
-
-  resetForm() {
-      state = ForgotPasswordFormState();
-    }
 
 }

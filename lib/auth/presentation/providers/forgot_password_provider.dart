@@ -6,7 +6,7 @@ import 'package:todo_app/auth/domain/domain.dart';
 import '../../state/forgot_password_state.dart';
 
 
-final forgotPasswordProvider = StateNotifierProvider<ForgotPasswordNotifier, ForgotPasswordState>(
+final forgotPasswordProvider = StateNotifierProvider.autoDispose<ForgotPasswordNotifier, ForgotPasswordState>(
   (ref) {
 
     final userRepository = UserRepositoryImpl();
@@ -45,11 +45,13 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState>{
 
       await userRepository.checkEmailToken(token);
 
-      _validateTokenStatus();
 
     } catch (e) {
       _invalidateTokenStatus('Error en la validación del token: $e');
+      return;
     }
+
+    _validateTokenStatus(token);
 
   }
 
@@ -60,11 +62,12 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState>{
       // Server call
       await userRepository.changePassword(password, state.token);
 
-      _validPasswordChange();
-
     } catch (e) {
       _invalidPasswordChange(e.toString());
+      return;
     }
+
+      _validPasswordChange();
 
   }
 
@@ -89,7 +92,8 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState>{
 
     state = state.copyWith(
       forgotPasswordStatus: ForgotPasswordStatus.tokenNotValidated,
-      errorMessage: errorMessage
+      errorMessage: errorMessage,
+      token: null
     );
 
   }
@@ -103,10 +107,11 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState>{
 
   }
 
-  void _validateTokenStatus() {
+  void _validateTokenStatus( String token) {
 
     state = state.copyWith(
-      forgotPasswordStatus: ForgotPasswordStatus.tokenValidated
+      forgotPasswordStatus: ForgotPasswordStatus.tokenValidated,
+      token: token
     );
     
   }
