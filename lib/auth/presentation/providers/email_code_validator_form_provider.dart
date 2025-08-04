@@ -48,9 +48,7 @@ class EmailCodeValidatorFormNotifier extends StateNotifier<EmailCodeValidatorFor
 
   onFormSubmmit() async {
     
-    state = state.copyWith(
-      isFormPosted: true,
-    ); 
+    _touchEveryField(); 
 
     if ( !state.isValid ) return;
 
@@ -62,6 +60,16 @@ class EmailCodeValidatorFormNotifier extends StateNotifier<EmailCodeValidatorFor
 
     state = state.copyWith(
       isPosting: false
+    );
+  }
+
+  _touchEveryField() {
+
+    onTokenChanged(state.token);
+
+    state = state.copyWith(
+      token: state.token,
+      isFormPosted: true
     );
   }
 
