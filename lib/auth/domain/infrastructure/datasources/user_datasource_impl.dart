@@ -2,7 +2,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:todo_app/auth/domain/datasource/user_datasoruce.dart';
-import 'package:todo_app/auth/domain/enitites/user.dart';
 import 'package:todo_app/config/app_config.dart';
 
 class UserDatasourceImpl extends UserDatasource{
@@ -55,7 +54,6 @@ class UserDatasourceImpl extends UserDatasource{
       );
 
       // The data response contains the token
-      print('TOKEN: ${response.data}');
       return response.data;
 
     } on DioException catch (e) {
@@ -101,23 +99,19 @@ class UserDatasourceImpl extends UserDatasource{
   }
 
   @override
-  Future<User> register(String username, String password, String email) async {
+  Future<void> register(String username, String password, String email) async {
     
     try {
 
       final dio = _createDio(authRequired: false);
 
-      final response = await dio.post('/register',
+      await dio.post('/register',
         data: {
           'username': username,
           'password': password,
           'email': email
         }
       );
-
-      // TODO: Mapper
-      //return response.data;
-      return User(username: username, password: password, token: 'token', roles: ['roles']);
 
     } on DioException catch (e) {
 

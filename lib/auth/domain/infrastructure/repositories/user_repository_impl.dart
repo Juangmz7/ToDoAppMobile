@@ -1,6 +1,5 @@
 
 import 'package:todo_app/auth/domain/datasource/user_datasoruce.dart';
-import 'package:todo_app/auth/domain/enitites/user.dart';
 import 'package:todo_app/auth/domain/infrastructure/datasources/user_datasource_impl.dart';
 import 'package:todo_app/auth/domain/repositories/user_repository.dart';
 
@@ -23,8 +22,8 @@ class UserRepositoryImpl extends UserRepository{
   }
 
   @override
-  Future<User> register(String username, String password, String email) {
-    return userDatasource.register(username, password, email);
+  Future<void> register(String username, String password, String email) async{
+    await userDatasource.register(username, password, email);
   }
   
   @override
