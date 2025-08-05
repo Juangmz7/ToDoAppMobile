@@ -6,12 +6,15 @@ const scaffoldBackgroundColor = Color.fromARGB(255, 30, 30, 31);
 
 class AppTheme {
 
+  static const taskBoxColor = Color.fromARGB(255, 14, 26, 78);
+  static const taskPagesBackground = Color.fromARGB(255, 50, 68, 121);
+
   ThemeData getTheme() => ThemeData(
     
     //* General
     useMaterial3: true,
     brightness: Brightness.dark,
-
+    
     //* Texts
     textTheme: TextTheme(
       titleLarge: GoogleFonts.montserratAlternates()
