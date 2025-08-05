@@ -1,6 +1,5 @@
 
 import 'package:dio/dio.dart';
-import 'package:intl/intl.dart';
 import 'package:todo_app/config/app_config.dart';
 import 'package:todo_app/domain/domain.dart';
 import 'package:todo_app/domain/infrastructure/mappers/mappers.dart';
