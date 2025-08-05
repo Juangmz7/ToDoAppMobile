@@ -1,44 +1,12 @@
 
 import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:todo_app/auth/domain/datasource/user_datasoruce.dart';
 import 'package:todo_app/config/app_config.dart';
+import 'package:todo_app/shared/functions/functions.dart';
 
 class UserDatasourceImpl extends UserDatasource{
 
-  Dio _createDio( {required bool authRequired} ) {
-    
-    final dio = Dio(
-      BaseOptions(
-        baseUrl: AppConfig.authUrl, // Ensure the API_URL is set in .env
-        connectTimeout: const Duration(seconds: 5),
-        receiveTimeout: const Duration(seconds: 5),
-      )
-    );
-
-    // Adds the bearer token to each request
-    dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) async {
-          
-          if ( !authRequired ) return handler.next(options);
-
-          final tokenStorage = FlutterSecureStorage();
-          
-          final token = await tokenStorage.read(key: 'token');
-
-          if(token != null) {
-            // Add the token to the header
-            options.headers['Authorization'] = 'Bearer $token';
-          }
-          return handler.next(options);
-        }, 
-      )
-    );
-
-    return dio;
-  }
 
   @override
   Future<String> login(String username, String password) async {
@@ -46,7 +14,7 @@ class UserDatasourceImpl extends UserDatasource{
     try {
 
       // Login post request
-      final dio = _createDio(authRequired: false);
+      final dio = createDio(authRequired: false, url: AppConfig.authUrl);
       final response = await dio.post('/login',
         data: {
           'username': username,
@@ -80,7 +48,7 @@ class UserDatasourceImpl extends UserDatasource{
     
     try {
       
-      final dio = _createDio(authRequired: true);
+      final dio = createDio(authRequired: true, url: AppConfig.authUrl);
       await dio.post('/logout');
 
     } on DioException catch (e) {
@@ -104,7 +72,7 @@ class UserDatasourceImpl extends UserDatasource{
     
     try {
 
-      final dio = _createDio(authRequired: false);
+      final dio = createDio(authRequired: false, url: AppConfig.authUrl);
 
       await dio.post('/register',
         data: {
@@ -116,20 +84,7 @@ class UserDatasourceImpl extends UserDatasource{
 
     } on DioException catch (e) {
 
-      if( e.type == DioExceptionType.badResponse ) {
-
-        if ( e.response != null) {
-          final errorMessage = e.response?.data['message'];
-          throw Exception(errorMessage); 
-        }
-
-      }
-      
-      if( e.type == DioExceptionType.connectionTimeout ) {
-        throw Exception('Revisar conexion a internet');
-      }
-
-      throw Exception(e);
+      dioExceptionHandler(e);
       
     } catch (e) {
       throw Exception(e);
@@ -142,7 +97,7 @@ class UserDatasourceImpl extends UserDatasource{
     
     try {
 
-      final dio = _createDio(authRequired: false);
+      final dio = createDio(authRequired: false, url: AppConfig.authUrl);
 
       await dio.post('/forgot-password',
         data: {
@@ -152,21 +107,7 @@ class UserDatasourceImpl extends UserDatasource{
 
     } on DioException catch (e) {
       
-      // Send the status error
-      if( e.type == DioExceptionType.badResponse ) {
-
-        if ( e.response != null) {
-          final errorMessage = e.response?.data['message'];
-          throw Exception(errorMessage); 
-        }
-
-      }      
-
-      if( e.type == DioExceptionType.connectionTimeout ) {
-        throw Exception('Revisar conexion a internet');
-      }
-
-      throw Exception(e);
+      dioExceptionHandler(e);
 
     } catch (e) {
       throw Exception(e);
@@ -178,7 +119,7 @@ class UserDatasourceImpl extends UserDatasource{
     
     try {
 
-      final dio = _createDio(authRequired: false);
+      final dio = createDio(authRequired: false, url: AppConfig.authUrl);
 
       await dio.get('/validate-reset-token',
         queryParameters: {
@@ -188,21 +129,7 @@ class UserDatasourceImpl extends UserDatasource{
 
     } on DioException catch (e) {
       
-      // Send the status error
-      if( e.type == DioExceptionType.badResponse ) {
-
-        if ( e.response != null) {
-          final errorMessage = e.response?.data['message'];
-          throw Exception(errorMessage); 
-        }
-
-      }      
-
-      if( e.type == DioExceptionType.connectionTimeout ) {
-        throw Exception('Revisar conexion a internet');
-      }
-
-      throw Exception(e);
+      dioExceptionHandler(e);
 
     } catch (e) {
       throw Exception(e);
@@ -215,7 +142,7 @@ class UserDatasourceImpl extends UserDatasource{
     
     try {
 
-      final dio = _createDio(authRequired: false);
+      final dio = createDio(authRequired: false, url: AppConfig.authUrl);
 
       await dio.post('/change-password',
         queryParameters: {
@@ -226,21 +153,7 @@ class UserDatasourceImpl extends UserDatasource{
 
     } on DioException catch (e) {
       
-      // Send the status error
-      if( e.type == DioExceptionType.badResponse ) {
-
-        if ( e.response != null) {
-          final errorMessage = e.response?.data['message'];
-          throw Exception(errorMessage); 
-        }
-
-      }      
-
-      if( e.type == DioExceptionType.connectionTimeout ) {
-        throw Exception('Revisar conexion a internet');
-      }
-
-      throw Exception(e);
+      dioExceptionHandler(e);
 
     } catch (e) {
       throw Exception(e);
