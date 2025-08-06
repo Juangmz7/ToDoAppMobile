@@ -7,8 +7,8 @@ import 'package:todo_app/presentation/screens/screens.dart';
 
 final appRouter = GoRouter(
 
-  initialLocation: '/login',
-  //initialLocation: '/home',
+  //initialLocation: '/login',
+  initialLocation: '/home-tasks',
   routes: [
 
     //* Auth routes
