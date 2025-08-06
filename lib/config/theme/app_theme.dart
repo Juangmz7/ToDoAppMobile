@@ -7,7 +7,7 @@ const scaffoldBackgroundColor = Color.fromARGB(255, 30, 30, 31);
 class AppTheme {
 
   static const taskBoxColor = Color.fromARGB(255, 14, 26, 78);
-  static const taskPagesBackground = Color.fromARGB(255, 50, 68, 121);
+  static const taskPagesBackground = Color.fromARGB(255, 81, 101, 160);
 
   ThemeData getTheme() => ThemeData(
     
