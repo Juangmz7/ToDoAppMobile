@@ -48,5 +48,13 @@ class TaskResponse {
     // Convert DateTime to JSON format 'yyyy-MM-dd'
     static String dateTimeToJsonFormat(DateTime date) => DateFormat('yyyy-MM-dd').format(date);
     static String dateTimeToNormalFormat(DateTime date) => DateFormat('dd/MM/yyyy').format(date);
+
+    static TaskResponse entityToTaskResponse(Task task) => TaskResponse(
+      id: task.id,
+      body: task.body,
+      priority: task.priority,
+      taskDate: task.date,
+      completed: task.isCompleted
+    );
     
 }

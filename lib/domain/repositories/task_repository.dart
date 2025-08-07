@@ -10,5 +10,7 @@ abstract class TaskRepository {
   Future<List<Task>> getTasksByDateOrderByPriorityDescending(DateTime date);
   
   Future<List<Task>> getTaskByPriority(TaskPriority priority);
+
+  Future<void> updateTask(Task task);
   
 }

@@ -25,16 +25,24 @@ class Task {
     required this.date
   });
 
-  @override
-String toString() {
-  return 'Task('
-      'id: $id, '
-      'body: "$body", '
-      'isCompleted: $isCompleted, '
-      'priority: ${priority.name}, '
-      'date: $formattedDate'
-      ')';
+  Task copyWith({
+  int? id,
+  String? body,
+  bool? isCompleted,
+  TaskPriority? priority,
+  DateTime? date,
+}) {
+  return Task(
+    id: id ?? this.id,
+    body: body ?? this.body,
+    isCompleted: isCompleted ?? this.isCompleted,
+    priority: priority ?? this.priority,
+    date: date ?? this.date,
+  );
 }
+
+
+
 
    
 }

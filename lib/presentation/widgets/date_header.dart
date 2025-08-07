@@ -61,7 +61,7 @@ class DateHeader extends StatelessWidget {
                 children: [
                   
                   IconButton(
-                    onPressed: swiperController.previous,
+                    onPressed: () => swiperController.previous(),
                     icon: const Icon(
                       Icons.arrow_back_ios_new_rounded
                     )
@@ -88,7 +88,7 @@ class DateHeader extends StatelessWidget {
 
                   const SizedBox(width: 10),
                   IconButton(
-                    onPressed: swiperController.next,
+                    onPressed: () => swiperController.next(),
                     icon: Icon(
                       Icons.arrow_forward_ios_rounded
                     )

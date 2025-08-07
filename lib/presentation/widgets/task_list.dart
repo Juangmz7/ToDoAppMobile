@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/domain/domain.dart';
 import 'package:todo_app/presentation/presentation.dart';
 
 
-class TaskList extends StatefulWidget {
+class TaskList extends ConsumerStatefulWidget {
 
   final List<Task> tasks;
 
@@ -13,19 +14,41 @@ class TaskList extends StatefulWidget {
   });
 
   @override
-  State<TaskList> createState() => _TaskListState();
+  ConsumerState<TaskList> createState() => _TaskListState();
 }
 
-class _TaskListState extends State<TaskList> {
+class _TaskListState extends ConsumerState<TaskList> {
 
   List<TextEditingController> _controllers = [];
+  final focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
+
+    // Add a permanent listener which executes every time it loose the focus
+    // It listens to body changes when unfocus 
+    focusNode.addListener(() {
+      
+      if ( focusNode.hasFocus ) return;
+
+      for ( int i = 0; i < widget.tasks.length; i++ ) {
+        
+        final task = widget.tasks[i];
+        final controller = _controllers[i];
+        final newBody = controller.text.trim();
+
+        // If initial body is the same
+        if ( task.body.trim() == controller.text.trim()) return;
+
+        // Calls the notifier to update the task
+        ref.read(taskListFormProvider(task).notifier).updateBodyTask(newBody);
+        
+      }
+    });
   }
 
-  // Initilize form controllers
+  // Initilize form controllers which initializes the form data
   void _initControllers() {
 
     _controllers = widget.tasks.map(
@@ -51,18 +74,22 @@ class _TaskListState extends State<TaskList> {
     final size = MediaQuery.of(context).size;
     final taskHeight = size.height * 0.07;
     final taskWidth = size.width * 0.85;
+    final textStyle = Theme.of(context).textTheme;
 
     if (widget.tasks.isEmpty) {
       return CustomTaskFormField(
         height: taskHeight,
         width: taskWidth,
         onChanged: null,
+        //TODO: focusNode
         hintText: 'No hay tareas para hoy',
         padding: EdgeInsets.only(left: size.width*0.18),
       );
     }
 
     _initControllers();
+
+    //TODO: Poner 2 mapas, uno de controladores y otro de focus
 
     return Expanded(
             child: ListView.builder(
@@ -76,8 +103,14 @@ class _TaskListState extends State<TaskList> {
                     CustomTaskFormField(
                       height: taskHeight,
                       width: taskWidth,
-                      onChanged: null,
+                      focusNode: focusNode,
                       controller: _controllers[index],
+                      style: task.isCompleted ?
+                        TextStyle(
+                          fontFamily: textStyle.titleSmall?.fontFamily,
+                          decoration: TextDecoration.lineThrough
+                        )
+                      : null,
                       prefixIcon: IconButton(
                         onPressed: () {},
                         color: const Color.fromARGB(255, 174, 54, 244),

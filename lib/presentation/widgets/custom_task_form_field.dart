@@ -14,6 +14,8 @@ class CustomTaskFormField extends StatelessWidget {
   final TextEditingController? controller;
   final Function(String)? onChanged;
   final EdgeInsets? padding;
+  final TextStyle? style;
+  final FocusNode? focusNode;
 
   const CustomTaskFormField({
     super.key,
@@ -23,9 +25,11 @@ class CustomTaskFormField extends StatelessWidget {
     this.suffixIcon,
     this.controller,
     this.padding,
+    this.style,
+    this.focusNode,
+    this.onChanged,
     required this.height,
     required this.width, 
-    required this.onChanged,
   });
 
   @override
@@ -44,8 +48,9 @@ class CustomTaskFormField extends StatelessWidget {
       child: Center(
         child: TextFormField(
           onChanged: onChanged,
+          focusNode: focusNode,
           controller: controller,
-          style: textStyle.titleSmall,
+          style: style ?? textStyle.titleSmall,
           maxLines: null,
 
           keyboardType: TextInputType.text,

@@ -91,7 +91,9 @@ class LoginForm extends ConsumerWidget {
                 backgroundColor: WidgetStatePropertyAll(Colors.deepPurple), 
                 foregroundColor: WidgetStatePropertyAll(Colors.white)
               ),
-              child: const Text('Ingresar'),
+              child: formProvider.isPosting ?
+                      const Center(child: CircularProgressIndicator())
+                    : const Text('Ingresar')
             ),
 
 

@@ -1,5 +1,6 @@
 
 import 'package:dio/dio.dart';
+
 import 'package:todo_app/config/app_config.dart';
 import 'package:todo_app/domain/domain.dart';
 import 'package:todo_app/domain/infrastructure/mappers/mappers.dart';
@@ -133,4 +134,24 @@ class TaskDatasourceImpl extends TaskDatasource{
     return [];
 
   }
+  
+  @override
+  Future<void> updateTask(Task task) async {
+
+    final TaskResponse taskResponse = TaskResponse.entityToTaskResponse(task);
+
+    try {
+
+      await _dio.put('/${task.id}', data: taskResponse.toMap());
+
+    } on DioException catch (e) {
+      
+      dioExceptionHandler(e);
+
+    } catch (e) {
+      throw Exception(e);
+    }
+
+  }
+
 }

@@ -11,4 +11,5 @@ abstract class TaskDatasource {
   
   Future<List<Task>> getTaskByPriority(TaskPriority priority);
 
+  Future<void> updateTask(Task task);
 }

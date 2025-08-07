@@ -8,8 +8,7 @@ import 'package:todo_app/states/states.dart';
 
 
 
-// //* Provider for managing task navigation and fetching tasks by date
-
+//* Provider for managing task navigation and fetching tasks by date
 final taskProvider = FutureProvider<List<Task>>((ref) async {
   final date = ref.watch(activeDateProvider);
   final filter = ref.watch(taskFilterProvider).taskFilterSelection;

@@ -33,4 +33,9 @@ class TaskRepositoryImpl extends TaskRepository{
     return taskDatasource.getTasksByDateOrderByPriorityDescending(date);
   }
 
+  @override
+  Future<void> updateTask(Task task) async {
+    await taskDatasource.updateTask(task);
+  }
+
 }
