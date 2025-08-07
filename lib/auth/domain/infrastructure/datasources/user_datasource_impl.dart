@@ -21,7 +21,6 @@ class UserDatasourceImpl extends UserDatasource{
           'password': password
         }, 
       );
-
       // The data response contains the token
       return response.data;
 
