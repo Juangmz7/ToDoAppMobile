@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/config/theme/app_theme.dart';
-import 'package:todo_app/presentation/views/task_list_view.dart';
 import 'package:todo_app/presentation/widgets/task_filters.dart';
+import 'package:todo_app/presentation/widgets/task_list_slideshow.dart';
+import 'package:todo_app/presentation/widgets/widgets.dart';
 
-class HomeTasksScreen extends ConsumerWidget {
+class HomeTasksScreen extends StatelessWidget {
   const HomeTasksScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
 
     final size = MediaQuery.of(context).size;
     final textStyle = Theme.of(context).textTheme;
@@ -55,13 +55,15 @@ class HomeTasksScreen extends ConsumerWidget {
                 SizedBox(height: 30),
                 
                 //* Filters for the tasks
-                const TaskFilters(),
+                TaskFilters(
+                  taskFilterDialogCallback: TaskFilterMenuDialog.openDialog,
+                ),
       
                 const SizedBox(height: 20),
               
                 //* Title with date (scrollable to next or previous day)
-                //* Tasks list (list view builder)
-                const TaskListView(),
+                const TaskListSlideshow(),
+                
                 SizedBox(height: 40 ),
               
                 ],

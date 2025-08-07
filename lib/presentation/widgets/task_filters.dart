@@ -1,10 +1,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:todo_app/config/theme/app_theme.dart';
+import 'package:todo_app/presentation/presentation.dart';
 
 
 class TaskFilters extends StatelessWidget {
-  const TaskFilters({super.key});
+  
+  final TaskFilterDialogCallback taskFilterDialogCallback;
+
+  const TaskFilters({
+    super.key,
+    required this.taskFilterDialogCallback
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +36,7 @@ class TaskFilters extends StatelessWidget {
           const SizedBox(width: 10),
 
           FilledButton(
-            onPressed: () {},
+            onPressed: () => taskFilterDialogCallback(context),
             style: FilledButton.styleFrom(
               backgroundColor: Colors.lightBlueAccent
             ),
