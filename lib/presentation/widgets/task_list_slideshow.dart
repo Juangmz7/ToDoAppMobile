@@ -72,7 +72,8 @@ class _TaskPageLoader extends ConsumerWidget {
       );
     }
 
-    final tasksAsync = ref.watch(taskByDateProvider(date));
+    // Returns the instance which provides the tasks for the filter state  
+    final tasksAsync = ref.watch(taskProvider);
 
     // Future Provider
     return tasksAsync.when(

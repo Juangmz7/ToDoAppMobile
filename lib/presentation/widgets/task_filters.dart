@@ -1,10 +1,11 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/config/theme/app_theme.dart';
 import 'package:todo_app/presentation/presentation.dart';
 
 
-class TaskFilters extends StatelessWidget {
+class TaskFilters extends ConsumerWidget {
   
   final TaskFilterDialogCallback taskFilterDialogCallback;
 
@@ -14,10 +15,11 @@ class TaskFilters extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
     final size = MediaQuery.of(context).size;
     final textStyle = Theme.of(context).textTheme;
+    final filter = ref.watch(taskFilterProvider);
 
     return Container(
       height: size.height * 0.06,
@@ -40,7 +42,7 @@ class TaskFilters extends StatelessWidget {
             style: FilledButton.styleFrom(
               backgroundColor: Colors.lightBlueAccent
             ),
-            child: Text('Mayor prioridad', style: TextStyle(
+            child: Text(filter.taskFilterSelection.label, style: TextStyle(
               color: Colors.black
             ))
           )

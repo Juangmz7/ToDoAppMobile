@@ -1,7 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:todo_app/config/config.dart';
+import 'package:todo_app/presentation/providers/providers.dart';
+import 'package:todo_app/states/states.dart';
 
 typedef TaskFilterDialogCallback = void Function(BuildContext);
 
@@ -20,7 +23,7 @@ Widget _taskFilterDialogBuilder(BuildContext context) {
 
   final size = MediaQuery.of(context).size;
   final height = size.height*0.44;
-  final width = size.width*0.5;
+  final width = size.width*0.6;
   final textStyle = Theme.of(context).textTheme;
  
   return Consumer(
@@ -44,17 +47,29 @@ Widget _taskFilterDialogBuilder(BuildContext context) {
                 label: 'Mayor prioridad',
                 onPressed: () {
                   
+                  ref.read(taskFilterProvider.notifier)
+                    .onFilterChanged(TaskFilterSelection.greaterPriority);
+
+                  context.pop();  
+
                 },
               ),
 
               _CustomFilledButton(
                 label: 'Menor prioridad',
-                onPressed: () {}
+                onPressed: () {
+                  
+                  ref.read(taskFilterProvider.notifier)
+                    .onFilterChanged(TaskFilterSelection.lessPriority);
+
+                  context.pop();
+                  
+                }
               ),
 
               const SizedBox(height: 15),
 
-              Text('Prioridad:', style: textStyle.titleSmall),
+              Text('Filtrar por prioridad:', style: textStyle.titleSmall),
 
 
               _CustomFilledButton(
