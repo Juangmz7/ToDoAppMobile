@@ -47,4 +47,6 @@ class TaskResponse {
 
     // Convert DateTime to JSON format 'yyyy-MM-dd'
     static String dateTimeToJsonFormat(DateTime date) => DateFormat('yyyy-MM-dd').format(date);
+    static String dateTimeToNormalFormat(DateTime date) => DateFormat('dd/MM/yyyy').format(date);
+    
 }
