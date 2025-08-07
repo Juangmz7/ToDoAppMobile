@@ -1,17 +1,19 @@
 
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/domain/domain.dart';
-import 'package:todo_app/domain/infrastructure/mappers/mappers.dart';
 import 'package:todo_app/presentation/presentation.dart';
 
 
 class TaskListView extends ConsumerWidget {
 
   final List<Task> tasks;
+  final SwiperController swiperController;
 
   const TaskListView({
     super.key,
+    required this.swiperController,
     required this.tasks
   });
 
@@ -29,10 +31,11 @@ class TaskListView extends ConsumerWidget {
 
           //* Date Header
           DateHeader(
-            date: TaskResponse.dateTimeToJsonFormat(date)
+            swiperController: swiperController,
+            date: date
           ),
           
-          const SizedBox(height: 30),
+          const SizedBox(height: 20),
           
           //* Task List
           TaskList(tasks: tasks)

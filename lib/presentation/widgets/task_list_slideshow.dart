@@ -19,6 +19,7 @@ class TaskListSlideshow extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final size = MediaQuery.of(context).size;
+    final SwiperController swiperController = SwiperController();
 
     //* Today index is 500, tommorrow 501, yesterday 499
     final itemCount = 1001;
@@ -27,7 +28,8 @@ class TaskListSlideshow extends ConsumerWidget {
       height: size.height * 0.65,
       width: size.width * 0.85,
       child: Swiper(
-        itemCount: itemCount,
+        controller: swiperController,
+        itemCount: itemCount,        
         index: baseIndex,
         loop: false,
         onIndexChanged: (index) {
@@ -42,7 +44,10 @@ class TaskListSlideshow extends ConsumerWidget {
           final date = getDateFromIndex(index);
 
           // Loads the page if it is in date state provider
-          return _TaskPageLoader(date: date);
+          return _TaskPageLoader(
+            swiperController: swiperController,
+            date: date
+          );
 
         },
 
@@ -55,8 +60,10 @@ class TaskListSlideshow extends ConsumerWidget {
 class _TaskPageLoader extends ConsumerWidget {
 
   final DateTime date;
+  final SwiperController swiperController;
 
   const _TaskPageLoader({
+    required this.swiperController,
     required this.date
   });
 
@@ -77,7 +84,10 @@ class _TaskPageLoader extends ConsumerWidget {
 
     // Future Provider
     return tasksAsync.when(
-      data: (data) => TaskListView(tasks: data),
+      data: (data) => TaskListView(
+        tasks: data,
+        swiperController: swiperController
+      ),
       error: (e, _) => Center(
         child: Text(
           'Error: ${formatException(e.toString())}',

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/config/theme/app_theme.dart';
-import 'package:todo_app/presentation/widgets/task_filters.dart';
-import 'package:todo_app/presentation/widgets/task_list_slideshow.dart';
 import 'package:todo_app/presentation/widgets/widgets.dart';
 
 class HomeTasksScreen extends StatelessWidget {
