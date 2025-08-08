@@ -78,7 +78,7 @@ class _TaskPageLoader extends ConsumerWidget {
     }
   
     // Returns the instance which provides the tasks for the filter state  
-    final tasksListState = ref.watch(tasksListProvider(date));
+    final tasksListState = ref.watch(tasksListProvider);
     
     if ( tasksListState.isLoading ) {
       return Center(

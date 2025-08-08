@@ -2,15 +2,15 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/domain/domain.dart';
-import 'package:todo_app/presentation/presentation.dart' show taskRepositoryProvider;
-import 'package:todo_app/presentation/providers/task_filter_provider.dart';
+import 'package:todo_app/presentation/providers/providers.dart';
 import 'package:todo_app/states/states.dart';
 
 
-final tasksListProvider = StateNotifierProvider.autoDispose.family<TasksNotifier, TaskListState, DateTime>((ref, date) {
+final tasksListProvider = StateNotifierProvider<TasksNotifier, TaskListState>((ref) {
   
   final repository = ref.read(taskRepositoryProvider);
   final taskFilter = ref.watch(taskFilterProvider);
+  final date = ref.watch(activeDateProvider);
 
   final getTaskByFilterCallback = taskFilter.taskFilterSelection == TaskFilterSelection.greaterPriority
                                     ? () => repository.getTasksByDateOrderByPriorityAscending(date) :

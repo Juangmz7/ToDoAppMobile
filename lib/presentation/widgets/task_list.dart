@@ -61,7 +61,7 @@ class _TaskListState extends ConsumerState<TaskList> {
       if ( task.body.trim() == newBody ) return;
 
       // Calls the notifier to update the task
-      ref.read(tasksListProvider(task.date).notifier).updateTaskBody(task.id, newBody!);
+      ref.read(tasksListProvider.notifier).updateTaskBody(task.id, newBody!);
         
     });
 
@@ -131,7 +131,7 @@ class _TaskListState extends ConsumerState<TaskList> {
                       : null,
                       prefixIcon: IconButton(
                         onPressed: () {
-                          ref.read(tasksListProvider(task.date).notifier).toggleTaskCompletion(task.id);
+                          ref.read(tasksListProvider.notifier).toggleTaskCompletion(task.id);
                         },                           
                         color: const Color.fromARGB(255, 174, 54, 244),
                         icon: task.isCompleted ? const Icon(Icons.check_circle_rounded) : const Icon(Icons.circle_outlined)
