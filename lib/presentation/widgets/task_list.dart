@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_app/config/theme/app_theme.dart';
 import 'package:todo_app/domain/domain.dart';
 import 'package:todo_app/presentation/presentation.dart';
 
@@ -99,13 +100,18 @@ class _TaskListState extends ConsumerState<TaskList> {
     final textStyle = Theme.of(context).textTheme;
 
     if (widget.tasks.isEmpty) {
-      return CustomTaskFormField(
+      return Container(
+        decoration: BoxDecoration(
+          color: AppTheme.taskBoxColor,
+          borderRadius: BorderRadius.circular(size.width * 0.05)
+        ), 
         height: taskHeight,
         width: taskWidth,
-        onChanged: null,
-        //TODO: focusNode
-        hintText: 'No hay tareas para hoy',
         padding: EdgeInsets.only(left: size.width*0.18),
+        child: Center(
+          child: Text('No hay tareas para hoy'),
+        ),
+
       );
     }
 
@@ -131,6 +137,7 @@ class _TaskListState extends ConsumerState<TaskList> {
                       : null,
                       prefixIcon: IconButton(
                         onPressed: () {
+                          if ( _getTaskFocusNode(task).hasFocus ) return;
                           ref.read(tasksListProvider.notifier).toggleTaskCompletion(task.id);
                         },                           
                         color: const Color.fromARGB(255, 174, 54, 244),
