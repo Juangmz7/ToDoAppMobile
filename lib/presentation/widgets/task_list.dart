@@ -19,50 +19,72 @@ class TaskList extends ConsumerStatefulWidget {
 
 class _TaskListState extends ConsumerState<TaskList> {
 
-  List<TextEditingController> _controllers = [];
-  final focusNode = FocusNode();
+  // Two mapps for each task
+  Map<int, FocusNode> focusNodes = {};
+  Map<int, TextEditingController> controllers = {};
+  
 
   @override
   void initState() {
     super.initState();
-
-    // Add a permanent listener which executes every time it loose the focus
-    // It listens to body changes when unfocus 
-    focusNode.addListener(() {
-      
-      if ( focusNode.hasFocus ) return;
-
-      for ( int i = 0; i < widget.tasks.length; i++ ) {
-        
-        final task = widget.tasks[i];
-        final controller = _controllers[i];
-        final newBody = controller.text.trim();
-
-        // If initial body is the same
-        if ( task.body.trim() == controller.text.trim()) return;
-
-        // Calls the notifier to update the task
-        ref.read(taskListFormProvider(task).notifier).updateBodyTask(newBody);
-        
-      }
-    });
   }
 
   // Initilize form controllers which initializes the form data
-  void _initControllers() {
+  TextEditingController _getTaskController(Task task) {
+    
+    // If this controller doesn´t exists it creates a new one
+    if ( !controllers.containsKey(task.id) ) {
+      controllers[task.id] = TextEditingController(text: task.body);
+    }
 
-    _controllers = widget.tasks.map(
-      (task) => TextEditingController(text: task.body)
-    ).toList();
+    return controllers[task.id]!;
 
+  }
+
+  FocusNode _getTaskFocusNode(Task task) {
+
+    // Add a permanent listener which executes every time it loose the focus
+    // It listens to body changes when unfocus 
+    // If it doesn´t exists it creates a new focusnode for this id
+    if (!focusNodes.containsKey(task.id)) {
+
+      final focusNode = FocusNode();
+
+      focusNode.addListener(() {
+      
+      if ( focusNode.hasFocus ) return;
+
+      // Modified label
+      final newBody = controllers[task.id]?.text.trim();
+
+      // If initial body is the same as the "modification"
+      if ( task.body.trim() == newBody ) return;
+
+      // Calls the notifier to update the task
+      ref.read(tasksListProvider(task.date).notifier).updateTaskBody(task.id, newBody!);
+        
+    });
+
+      // Asign the focusNode created with the listener to respective
+      // position in map
+      focusNodes[task.id] = focusNode;
+
+    }
+
+    return focusNodes[task.id]!;
+    
   }
 
   @override
   void dispose() {
 
-    for( final controller in _controllers ) {
-      controller.dispose();
-    }
+    controllers.forEach((_, controller) =>
+      controller.dispose()
+    );
+
+    focusNodes.forEach((_, focusNode) => 
+      focusNode.dispose()
+    );
 
     super.dispose();
 
@@ -87,10 +109,6 @@ class _TaskListState extends ConsumerState<TaskList> {
       );
     }
 
-    _initControllers();
-
-    //TODO: Poner 2 mapas, uno de controladores y otro de focus
-
     return Expanded(
             child: ListView.builder(
               itemBuilder: (context, index) {
@@ -103,8 +121,8 @@ class _TaskListState extends ConsumerState<TaskList> {
                     CustomTaskFormField(
                       height: taskHeight,
                       width: taskWidth,
-                      focusNode: focusNode,
-                      controller: _controllers[index],
+                      focusNode: _getTaskFocusNode(task),
+                      controller: _getTaskController(task),
                       style: task.isCompleted ?
                         TextStyle(
                           fontFamily: textStyle.titleSmall?.fontFamily,
@@ -112,7 +130,9 @@ class _TaskListState extends ConsumerState<TaskList> {
                         )
                       : null,
                       prefixIcon: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          ref.read(tasksListProvider(task.date).notifier).toggleTaskCompletion(task.id);
+                        },                           
                         color: const Color.fromARGB(255, 174, 54, 244),
                         icon: task.isCompleted ? const Icon(Icons.check_circle_rounded) : const Icon(Icons.circle_outlined)
                       ),

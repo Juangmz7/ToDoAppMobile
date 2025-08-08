@@ -2,7 +2,6 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/presentation/presentation.dart';
-import 'package:todo_app/shared/functions/functions.dart';
 
 class TaskListSlideshow extends ConsumerWidget {
   const TaskListSlideshow({super.key});
@@ -71,33 +70,26 @@ class _TaskPageLoader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final activeDate = ref.watch(activeDateProvider);
-    final textStyle = Theme.of(context).textTheme;
 
     if (!date.isAtSameMomentAs(activeDate)) {
       return Center(
         child: CircularProgressIndicator()
       );
     }
-
+  
     // Returns the instance which provides the tasks for the filter state  
-    final tasksAsync = ref.watch(taskProvider);
+    final tasksListState = ref.watch(tasksListProvider(date));
+    
+    if ( tasksListState.isLoading ) {
+      return Center(
+        child: CircularProgressIndicator()
+      );
+    }
 
-    // Future Provider
-    return tasksAsync.when(
-      data: (data) => TaskListView(
-        tasks: data,
-        swiperController: swiperController
-      ),
-      error: (e, _) => Center(
-        child: Text(
-          'Error: ${formatException(e.toString())}',
-          style: textStyle.titleMedium,
-        
-        ),
-      ),
-      loading: () => Center(
-        child: CircularProgressIndicator(),
-      ),
+    return TaskListView(
+      swiperController: swiperController,
+      tasks: tasksListState.tasks
     );
+    
   }
 }
