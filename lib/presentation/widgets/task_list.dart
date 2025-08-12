@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/config/theme/app_theme.dart';
@@ -53,19 +54,20 @@ class _TaskListState extends ConsumerState<TaskList> {
       final focusNode = FocusNode();
 
       focusNode.addListener(() {
-      
-      if ( focusNode.hasFocus ) return;
-
-      // Modified label
-      final newBody = controllers[task.id]?.text.trim();
-
-      // If initial body is the same as the "modification"
-      if ( task.body.trim() == newBody ) return;
-
-      // Calls the notifier to update the task
-      ref.read(tasksListProvider.notifier).updateTaskBody(task.id, newBody!);
+        setState(() {});
         
-    });
+        if ( focusNode.hasFocus ) return;
+
+        // Modified label
+        final newBody = controllers[task.id]?.text.trim();
+
+        // If initial body is the same as the "modification"
+        if ( task.body.trim() == newBody ) return;
+
+        // Calls the notifier to update the task
+        ref.read(tasksListProvider.notifier).updateTaskBody(task.id, newBody!);
+        
+      });
 
       // Asign the focusNode created with the listener to respective
       // position in map
@@ -99,9 +101,7 @@ class _TaskListState extends ConsumerState<TaskList> {
     final taskHeight = size.height * 0.07;
     final taskWidth = size.width * 0.85;
     final textStyle = Theme.of(context).textTheme;
-
-    //TODO
-    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom; // TODO: Adjust for keyboard height
 
     if (widget.tasks.isEmpty) {
       return Container(
@@ -111,7 +111,7 @@ class _TaskListState extends ConsumerState<TaskList> {
         ), 
         height: taskHeight,
         width: taskWidth,
-        padding: EdgeInsets.only(left: size.width*0.18),
+        padding: EdgeInsets.only(left: size.width*0.03),
         child: Center(
           child: Text('No hay tareas para hoy'),
         ),
@@ -128,39 +128,29 @@ class _TaskListState extends ConsumerState<TaskList> {
           return Column(
             children: [
             
-              CustomTaskFormField(
-                height: taskHeight,
-                width: taskWidth,
-                focusNode: _getTaskFocusNode(task),
-                controller: _getTaskController(task),
-                style: task.isCompleted ?
-                  TextStyle(
-                    fontFamily: textStyle.titleSmall?.fontFamily,
-                    decoration: TextDecoration.lineThrough
-                  )
-                : null,
-                prefixIcon: IconButton(
-                  onPressed: () {
-                    if ( _getTaskFocusNode(task).hasFocus ) return;
-                    ref.read(tasksListProvider.notifier).toggleTaskCompletion(task.id);
-                  },                           
-                  color: const Color.fromARGB(255, 174, 54, 244),
-                  icon: task.isCompleted ? const Icon(Icons.check_circle_rounded) : const Icon(Icons.circle_outlined)
-                ),
-                suffixIcon: Padding(
-                  padding: EdgeInsets.symmetric(vertical: size.height * 0.02, horizontal: size.width * 0.01),
-                  child: FilledButton(
-                    style: FilledButton.styleFrom(
-                      backgroundColor: task.priority.color,
-                      foregroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
-                    ),
-                    onPressed: () {
-                      final changeTaskPriorityDialog = ChangeTaskPriorityDialog(taskId: task.id);
-                      changeTaskPriorityDialog.openDialog(context);
-                    },
-                    child: Text(task.priority.label)
-                  ),
+              FadeIn(
+                child: CustomTaskFormField(
+                  height: taskHeight,
+                  width: taskWidth,
+                  focusNode: _getTaskFocusNode(task),
+                  controller: _getTaskController(task),
+                  color: _getTaskFocusNode(task).hasFocus
+                            ? const Color.fromARGB(255, 110, 1, 129) : null,
+                  style: task.isCompleted ?
+                    TextStyle(
+                      fontFamily: textStyle.titleSmall?.fontFamily,
+                      decoration: TextDecoration.lineThrough
+                    )
+                  : null,
+                  prefixIcon: _getTaskFocusNode(task).hasFocus ?
+                                 const SizedBox(height: 10, width: 10) :
+                                _CustomPreffixIcon(
+                                  task: task,
+                                  focusNode: _getTaskFocusNode(task)
+                                ),
+                  suffixIcon: _getTaskFocusNode(task).hasFocus ?
+                                null :
+                                _CustomSuffixIcon(task: task)
                 ),
               ),
             
@@ -173,5 +163,62 @@ class _TaskListState extends ConsumerState<TaskList> {
         scrollDirection: Axis.vertical,
       ),
     );
+  }
+}
+
+
+class _CustomSuffixIcon extends StatelessWidget {
+
+  final Task task;
+
+  const _CustomSuffixIcon({
+    required this.task
+  });
+
+  @override
+  Widget build(BuildContext context) {
+
+    final size = MediaQuery.of(context).size;
+
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: size.height * 0.02, horizontal: size.width * 0.01),
+      child: FilledButton(
+        style: FilledButton.styleFrom(
+          backgroundColor: task.priority.color,
+          foregroundColor: Colors.white,
+          padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
+        ),
+        onPressed: () {
+          final changeTaskPriorityDialog = ChangeTaskPriorityDialog(taskId: task.id);
+          changeTaskPriorityDialog.openDialog(context);
+        },
+        child: Text(task.priority.label)
+      ),
+    );
+  }
+}
+
+class _CustomPreffixIcon extends ConsumerWidget {
+
+  final Task task;
+  final FocusNode focusNode;
+
+  const _CustomPreffixIcon({
+    required this.task,
+    required this.focusNode
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+
+    return IconButton(
+      onPressed: () {
+        if ( focusNode.hasFocus ) return;
+        ref.read(tasksListProvider.notifier).toggleTaskCompletion(task.id);
+      },                           
+      color: const Color.fromARGB(255, 174, 54, 244),
+      icon: task.isCompleted ? const Icon(Icons.check_circle_rounded) : const Icon(Icons.circle_outlined)
+    );
+
   }
 }
