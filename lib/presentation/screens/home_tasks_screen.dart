@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/config/theme/app_theme.dart';
+import 'package:todo_app/presentation/widgets/audio_record_button.dart';
 import 'package:todo_app/presentation/widgets/widgets.dart';
 
 class HomeTasksScreen extends StatelessWidget {
@@ -71,24 +72,15 @@ class HomeTasksScreen extends StatelessWidget {
           ),
 
 
-          //* Floating action button to add a new task
+          //* Floating action button to record audio for a task
           Positioned(
-            bottom: size.height * 0.05,
-            right: size.width * 0.09,
-            child: FloatingActionButton(
-              onPressed: () {},
-              backgroundColor: const Color.fromARGB(255, 173, 63, 193),
-              splashColor: Colors.purple,
-              elevation: 20,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(size.width * 0.07),
-              ),
-              child: Icon(
-                size: size.width * 0.07,
-                Icons.add_rounded
-              ),
+              bottom: size.height * 0.05,
+              right: size.width * 0.09,
+            child: AudioRecordButton(
+              size: size.width * 0.07,
             ),
           ),
+          
         ],
       ),
     );
