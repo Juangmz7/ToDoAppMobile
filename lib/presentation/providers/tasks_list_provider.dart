@@ -5,7 +5,7 @@ import 'package:todo_app/domain/domain.dart';
 import 'package:todo_app/presentation/providers/providers.dart';
 import 'package:todo_app/states/states.dart';
 
-
+//TODO: Resolver problema autodispose con el provider
 final tasksListProvider = StateNotifierProvider<TasksNotifier, TaskListState>((ref) {
   
   final repository = ref.read(taskRepositoryProvider);
@@ -108,6 +108,13 @@ class TasksNotifier extends StateNotifier<TaskListState> {
     } catch (e) {
       state = originalState;
     }
+  }
+
+  void refreshTaskList(Task task) {
+    // Add the new task to the current state
+    state = state.copyWith(
+      tasks: [...state.tasks, task],
+    );
   }
 
 }
