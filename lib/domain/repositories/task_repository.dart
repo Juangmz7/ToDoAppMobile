@@ -16,5 +16,7 @@ abstract class TaskRepository {
   Future<void> updateTask(Task task);
 
   Future<Task> audioTaskSender(File file);
+
+  Future<Task> createTask(TaskRequest taskRequest);
   
 }

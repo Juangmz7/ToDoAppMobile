@@ -174,9 +174,7 @@ class TaskDatasourceImpl extends TaskDatasource{
 
   @override
   Future<Task> audioTaskSender(File file) async{
-    
-    //final mimeType = lookupMimeType(file.path) ?? 'audio/m4a';
-    
+        
     FormData formData = FormData.fromMap({
       'file': await MultipartFile.fromFile(
         file.path,
@@ -205,6 +203,30 @@ class TaskDatasourceImpl extends TaskDatasource{
       throw Exception(e);
     }
     
+  }
+  
+  @override
+  Future<Task> createTask(TaskRequest taskRequest) async {
+    
+    try {
+
+      final response = await _dio.post('', data: taskRequest.toMap());
+
+      if (response.data == null) {
+        throw Exception('No data received from server');
+      }
+
+      return _jsonToEntity(response.data);
+
+    } on DioException catch (e) {
+
+      dioExceptionHandler(e);
+      throw Exception('Failed to send audio task: ${e.message}');
+
+    } catch (e) {
+      throw Exception(e);
+    }
+
   }
 
   

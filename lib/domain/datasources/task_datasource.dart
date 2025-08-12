@@ -17,4 +17,6 @@ abstract class TaskDatasource {
 
   Future<Task> audioTaskSender(File file);
 
+  Future<Task> createTask(TaskRequest taskRequest);
+
 }

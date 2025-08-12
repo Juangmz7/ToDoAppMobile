@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:todo_app/domain/datasources/task_datasource.dart';
 import 'package:todo_app/domain/entities/task.dart';
+import 'package:todo_app/domain/entities/task_request.dart';
 import 'package:todo_app/domain/infrastructure/datasources/datasources.dart';
 import 'package:todo_app/domain/repositories/repositories.dart';
 
@@ -43,6 +44,11 @@ class TaskRepositoryImpl extends TaskRepository{
   @override
   Future<Task> audioTaskSender(File file) {
     return taskDatasource.audioTaskSender(file);
+  }
+
+  @override
+  Future<Task> createTask(TaskRequest taskRequest) {
+    return taskDatasource.createTask(taskRequest);
   }
 
 }
