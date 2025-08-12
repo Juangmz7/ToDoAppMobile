@@ -44,8 +44,27 @@ class TasksNotifier extends StateNotifier<TaskListState> {
   // Tasks initiallization for each new state
   Future<void> loadTasks() async {
     state = state.copyWith(isLoading: true);
-    final tasks = await getTaskByFilterCallback();
-    state = state.copyWith(tasks: tasks, isLoading: false);
+
+    try {
+
+      final tasks = await getTaskByFilterCallback();
+
+      state = state.copyWith(
+        tasks: tasks,
+        isLoading: false
+      );
+
+    } catch (e) {
+
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: e.toString()
+      );
+
+    }
+
+    state = state.copyWith(isLoading: false);
+
   }
 
 
@@ -74,10 +93,14 @@ class TasksNotifier extends StateNotifier<TaskListState> {
     final originalState = state;
     
     final updatedTasks = state.tasks.map((task) {
+      
+      // If the task id matches, update the body
       if (task.id == taskId) {
         return task.copyWith(body: newBody);
       }
+
       return task;
+
     }).toList();
 
     state = state.copyWith(tasks: updatedTasks);
@@ -116,5 +139,41 @@ class TasksNotifier extends StateNotifier<TaskListState> {
       tasks: [...state.tasks, task],
     );
   }
+
+  void createTask({
+    required String body,
+    required DateTime taskDate,
+    required TaskPriority priority
+
+  }) async {
+
+    state = state.copyWith(isLoading: true);
+
+    final taskRequest = TaskRequest(
+      body: body,
+      isCompleted: false,
+      priority: priority,
+      date: taskDate
+    );
+
+    try {
+
+      final tasks = await taskRepository.createTask(taskRequest);
+
+      state = state.copyWith(
+        tasks: [...state.tasks, tasks],
+        isLoading: false,
+      );
+
+    } catch (e) {
+
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: e.toString(),
+      );
+
+    }
+
+  }         
 
 }

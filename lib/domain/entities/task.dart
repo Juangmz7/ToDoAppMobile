@@ -2,10 +2,13 @@
 import 'package:intl/intl.dart';
 
 enum TaskPriority {
-  low,
-  medium,
-  high,
-  urgent
+  low('Baja'),
+  medium('Media'),
+  high('Alta'),
+  urgent('Urgente');
+
+  final String label;
+  const TaskPriority(this.label);
 }
 
 class Task {

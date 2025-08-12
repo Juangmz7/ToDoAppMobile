@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo_app/config/config.dart';
+import 'package:todo_app/presentation/presentation.dart';
 import 'package:todo_app/presentation/providers/providers.dart';
 import 'package:todo_app/states/states.dart';
 
@@ -43,7 +44,7 @@ Widget _taskFilterDialogBuilder(BuildContext context) {
               //* Order by options
               Text('Ordernar por: ', style: textStyle.titleSmall),
 
-              _CustomFilledButton(
+              CustomFilledButton(
                 label: 'Mayor prioridad',
                 onPressed: () {
                   
@@ -55,7 +56,7 @@ Widget _taskFilterDialogBuilder(BuildContext context) {
                 },
               ),
 
-              _CustomFilledButton(
+              CustomFilledButton(
                 label: 'Menor prioridad',
                 onPressed: () {
                   
@@ -72,22 +73,22 @@ Widget _taskFilterDialogBuilder(BuildContext context) {
               Text('Filtrar por prioridad:', style: textStyle.titleSmall),
 
 
-              _CustomFilledButton(
+              CustomFilledButton(
                 label: 'Urgente',
                 onPressed: null,
               ),
 
-              _CustomFilledButton(
+              CustomFilledButton(
                 label: 'Alta',
                 onPressed: null,
               ),
 
-              _CustomFilledButton(
+              CustomFilledButton(
                 label: 'Media',
                 onPressed: null,
               ),
 
-              _CustomFilledButton(
+              CustomFilledButton(
                 label: 'Baja',
                 onPressed: null,
               )
@@ -100,31 +101,5 @@ Widget _taskFilterDialogBuilder(BuildContext context) {
   );
 }
 
-class _CustomFilledButton extends StatelessWidget {
 
-  final String label;
-  final Function()? onPressed;
-  
-  const _CustomFilledButton({
-    this.onPressed,
-    required this.label,
-  });
-
-
-  @override
-  Widget build(BuildContext context) {
-    
-    final textStyle = Theme.of(context).textTheme;
-
-    return Center(
-      child: FilledButton(
-        style: FilledButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 174, 54, 244)
-        ),
-        onPressed: onPressed,
-        child: Text(label, style: textStyle.titleSmall) 
-      ),
-    );
-  }
-}
 

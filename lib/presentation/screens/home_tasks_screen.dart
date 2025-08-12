@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/config/theme/app_theme.dart';
+import 'package:todo_app/presentation/dialogs/dialogs.dart';
 import 'package:todo_app/presentation/widgets/audio_record_button.dart';
 import 'package:todo_app/presentation/widgets/widgets.dart';
 
@@ -49,7 +50,7 @@ class HomeTasksScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
 
-                Text('Bienvenido user500', style: textStyle.titleLarge),
+                Text('Bienvenido admin', style: textStyle.titleLarge),
       
                 SizedBox(height: 30),
                 
@@ -75,10 +76,19 @@ class HomeTasksScreen extends StatelessWidget {
           //* Floating action button to record audio for a task
           Positioned(
               bottom: size.height * 0.05,
-              right: size.width * 0.09,
+              right: size.width * 0.25,
             child: AudioRecordButton(
               size: size.width * 0.07,
             ),
+          ),
+
+          //* Floating action button to create a new task
+          Positioned(
+              bottom: size.height * 0.05,
+              right: size.width * 0.06,
+              child: AddTaskButton(
+                size: size.width * 0.07,
+              ),
           ),
           
         ],
