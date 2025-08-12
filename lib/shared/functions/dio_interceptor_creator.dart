@@ -8,7 +8,7 @@ Dio createDio( {required bool authRequired, required String url} ) {
     BaseOptions(
       baseUrl: url, // Ensure the API_URL is set in .env
       connectTimeout: const Duration(seconds: 5),
-      receiveTimeout: const Duration(seconds: 5),
+      receiveTimeout: const Duration(seconds: 10),
     )
   );
 
