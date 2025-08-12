@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:todo_app/domain/domain.dart';
 
 abstract class TaskDatasource {
@@ -12,4 +14,7 @@ abstract class TaskDatasource {
   Future<List<Task>> getTaskByPriority(TaskPriority priority);
 
   Future<void> updateTask(Task task);
+
+  Future<Task> audioTaskSender(File file);
+
 }

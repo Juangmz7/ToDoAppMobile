@@ -41,6 +41,18 @@ class Task {
   );
 }
 
+@override
+String toString() {
+  return 'Task('
+      'id: $id, '
+      'body: $body, '
+      'isCompleted: $isCompleted, '
+      'priority: $priority, '
+      'date: $formattedDate'
+      ')';
+}
+
+
 
 
 

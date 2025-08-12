@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 
 import 'package:todo_app/config/app_config.dart';
@@ -12,7 +14,7 @@ class TaskDatasourceImpl extends TaskDatasource{
   // Create a Dio instance with the base URL for tasks
   final Dio _dio = createDio(authRequired: true, url: AppConfig.taskUrl);
 
-  List<Task> _jsonToTask ( List<dynamic> jsonList ) {
+  List<Task> _jsonToTaskList ( List<dynamic> jsonList ) {
 
     // Map the JSON list to a list of TaskResponse objects
     final tasksResponse = jsonList.map(
@@ -32,6 +34,22 @@ class TaskDatasourceImpl extends TaskDatasource{
     
   }
 
+  Task _jsonToEntity ( Map<String, dynamic> json ) {
+
+    // Convert a single JSON object to a TaskResponse object
+    final taskResponse = TaskResponse.fromMap(json);
+
+    // Convert the TaskResponse object to a Task entity
+    return Task(
+      id: taskResponse.id,
+      body: taskResponse.body,
+      isCompleted: taskResponse.completed,
+      priority: taskResponse.priority,
+      date: taskResponse.taskDate,
+    );
+    
+  }
+
 
   @override
   Future<List<Task>> getTaskByPriority(TaskPriority priority) async {
@@ -45,7 +63,7 @@ class TaskDatasourceImpl extends TaskDatasource{
       );
 
       // Map the response data to a list of Task objects
-      return _jsonToTask(response.data);
+      return _jsonToTaskList(response.data);
 
     } on DioException catch (e) {
 
@@ -71,7 +89,7 @@ class TaskDatasourceImpl extends TaskDatasource{
         }
       );
 
-      return _jsonToTask(response.data);
+      return _jsonToTaskList(response.data);
 
    } on DioException catch (e) {
 
@@ -96,7 +114,7 @@ class TaskDatasourceImpl extends TaskDatasource{
         }
       );
 
-      return _jsonToTask(response.data);
+      return _jsonToTaskList(response.data);
 
    } on DioException catch (e) {
 
@@ -121,7 +139,7 @@ class TaskDatasourceImpl extends TaskDatasource{
         }
       );
 
-      return _jsonToTask(response.data);
+      return _jsonToTaskList(response.data);
 
    } on DioException catch (e) {
 
@@ -153,5 +171,42 @@ class TaskDatasourceImpl extends TaskDatasource{
     }
 
   }
+
+  @override
+  Future<Task> audioTaskSender(File file) async{
+    
+    //final mimeType = lookupMimeType(file.path) ?? 'audio/m4a';
+    
+    FormData formData = FormData.fromMap({
+      'file': await MultipartFile.fromFile(
+        file.path,
+        filename: 'audio_${DateTime.now().millisecondsSinceEpoch}.m4a',
+        contentType: DioMediaType('audio', 'm4a') 
+      )
+    });
+
+    try {
+      
+      final response = await _dio.post('/audio-gen', data: formData);
+
+      if (response.data == null) {
+        throw Exception('No data received from server');
+      }
+
+      return _jsonToEntity(response.data);
+
+    } on DioException catch (e) {
+
+      dioExceptionHandler(e);
+
+      throw Exception('Failed to send audio task: ${e.message}');
+
+    } catch (e) {
+      throw Exception(e);
+    }
+    
+  }
+
+  
 
 }
