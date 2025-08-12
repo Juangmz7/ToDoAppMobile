@@ -14,7 +14,6 @@ class AddTaskButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-
     return FloatingActionButton(
       onPressed: () {
         // Open dialog

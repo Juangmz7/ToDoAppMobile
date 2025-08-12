@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/config/theme/app_theme.dart';
 import 'package:todo_app/domain/domain.dart';
+import 'package:todo_app/presentation/dialogs/change_task_priority_dialog.dart';
 import 'package:todo_app/presentation/presentation.dart';
 
 
@@ -150,12 +151,15 @@ class _TaskListState extends ConsumerState<TaskList> {
                   padding: EdgeInsets.symmetric(vertical: size.height * 0.02, horizontal: size.width * 0.01),
                   child: FilledButton(
                     style: FilledButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 174, 54, 244),
+                      backgroundColor: task.priority.color,
                       foregroundColor: Colors.white,
                       padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
                     ),
-                    onPressed: () {},
-                    child: Text(task.priority.name)
+                    onPressed: () {
+                      final changeTaskPriorityDialog = ChangeTaskPriorityDialog(taskId: task.id);
+                      changeTaskPriorityDialog.openDialog(context);
+                    },
+                    child: Text(task.priority.label)
                   ),
                 ),
               ),
