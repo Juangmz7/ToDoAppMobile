@@ -7,6 +7,7 @@ import 'package:todo_app/auth/presentation/presentation.dart';
 
 import 'package:todo_app/auth/state/forgot_password_state.dart';
 import 'package:todo_app/config/config.dart';
+import 'package:todo_app/presentation/widgets/widgets.dart';
 import 'package:todo_app/shared/shared.dart';
 
 
@@ -81,7 +82,12 @@ class _ForgotPasswordFormState extends ConsumerState<ForgotPasswordForm> {
                 ref.read(forgotPasswordFormProvider.notifier).onFormSubmitted();
         
               },
-              child: Text('Enviar'),
+              child: forgotPasswordForm.isPosting ?
+                    CustomCircularProgressIndicator(
+                      horizontalPadding: 5,
+                      verticalPadding: 5,
+                    )
+                    : Text('Enviar'),
             ),
     
             const SizedBox(height: 40),

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/presentation/providers/task_recorder_provider.dart';
+import 'package:todo_app/presentation/widgets/custom_circular_progress_indicator.dart';
 import 'package:todo_app/shared/shared.dart';
 
 
@@ -82,7 +83,8 @@ class _AudioRecordButtonState extends ConsumerState<AudioRecordButton> {
         borderRadius: BorderRadius.circular(widget.size ?? 30),
       ),
       child: isPosting ?
-        CircularProgressIndicator() :
+        const CustomCircularProgressIndicator() 
+        :
         Icon(
           size: widget.size,
           isRecording ? Icons.stop : Icons.mic,

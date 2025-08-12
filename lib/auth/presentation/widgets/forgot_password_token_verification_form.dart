@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:todo_app/auth/presentation/presentation.dart';
+import 'package:todo_app/presentation/widgets/custom_circular_progress_indicator.dart';
 
 class ForgotPasswordTokenVerificationForm extends ConsumerWidget {
   const ForgotPasswordTokenVerificationForm({super.key});
@@ -39,7 +40,12 @@ class ForgotPasswordTokenVerificationForm extends ConsumerWidget {
                   ref.read(emailCodeValidatorFormProvider.notifier).onFormSubmmit();
 
                 },
-                child: Text('Verificar')
+                child: emailCodeValidatorForm.isPosting ? 
+                    CustomCircularProgressIndicator(
+                      horizontalPadding: 5,
+                      verticalPadding: 5,
+                    )
+                    : Text('Verificar')
               ),
 
       ],

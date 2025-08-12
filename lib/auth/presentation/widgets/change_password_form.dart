@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:todo_app/auth/presentation/presentation.dart';
+import 'package:todo_app/presentation/widgets/custom_circular_progress_indicator.dart';
 
 class ChangePasswordForm extends ConsumerWidget {
   const ChangePasswordForm({super.key});
@@ -64,7 +65,12 @@ class ChangePasswordForm extends ConsumerWidget {
                 ref.read(changePasswordFormProvider.notifier).onFormSubmitted();
       
               },
-              child: Text('Enviar')
+              child: changePasswordForm.isPosting ?
+                const CustomCircularProgressIndicator(
+                  horizontalPadding: 5,
+                  verticalPadding: 5,
+                )
+                : Text('Enviar')
             ),
           ],
         ),

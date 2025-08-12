@@ -6,3 +6,4 @@ export '../widgets/task_list_slideshow.dart';
 export '../widgets/add_task_button.dart';
 export '../widgets/custom_filled_button.dart';
 export '../widgets/create_task_form.dart';
+export '../widgets/custom_circular_progress_indicator.dart';

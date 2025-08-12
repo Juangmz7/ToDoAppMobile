@@ -5,6 +5,7 @@ import 'package:todo_app/auth/presentation/presentation.dart';
 
 
 import 'package:todo_app/auth/state/state.dart';
+import 'package:todo_app/presentation/presentation.dart';
 import 'package:todo_app/shared/functions/functions.dart';
 
 class RegisterForm extends ConsumerWidget {
@@ -105,7 +106,12 @@ class RegisterForm extends ConsumerWidget {
                 backgroundColor: WidgetStateProperty.all(const Color.fromARGB(255, 47, 173, 223)), 
                 foregroundColor: WidgetStatePropertyAll(Colors.white)
               ),
-              child: const Text('Crear cuenta'),
+              child: formProvider.isPosting ?
+                      CustomCircularProgressIndicator(
+                        horizontalPadding: 5,
+                        verticalPadding: 5,
+                      )                    
+                      : const Text('Crear cuenta'),
             ),
           ],
         ),
