@@ -56,6 +56,7 @@ class _AudioRecordButtonState extends ConsumerState<AudioRecordButton> {
     final isPosting = ref.watch(taskRecorderProvider).isPosting;
 
     return FloatingActionButton(
+      heroTag: 'recordAudioButton',
       onPressed: () {
 
         if( isRecording ) {

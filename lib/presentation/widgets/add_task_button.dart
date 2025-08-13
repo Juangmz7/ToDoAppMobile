@@ -15,6 +15,7 @@ class AddTaskButton extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return FloatingActionButton(
+      heroTag: 'add_task_button',
       onPressed: () {
         // Open dialog
         CreateTaskDialog.openDialog(context);
