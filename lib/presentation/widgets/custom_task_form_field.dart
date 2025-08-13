@@ -32,6 +32,11 @@ class CustomTaskFormField extends StatelessWidget {
     required this.width, 
   });
 
+  int _getLines(String text) {
+    if (text.isEmpty) return 1;
+    return '\n'.allMatches(text).length + 1;
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -40,7 +45,7 @@ class CustomTaskFormField extends StatelessWidget {
    
     return Container(
       width: width,
-      height: height,
+      height: focusNode?.hasFocus == false ? height : null,
       decoration: BoxDecoration(
         color: color ?? AppTheme.taskBoxColor,
         borderRadius: BorderRadius.circular(size.width * 0.05),
@@ -51,9 +56,13 @@ class CustomTaskFormField extends StatelessWidget {
           focusNode: focusNode,
           controller: controller,
           style: style ?? textStyle.titleSmall,
-          maxLines: null,
+          
+          minLines: focusNode?.hasFocus == true ?
+                    _getLines(controller?.text ?? '') : 1,
+          
+          maxLines: focusNode?.hasFocus == true ? 10 : 1,
 
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.multiline,
           decoration: InputDecoration(
             border: InputBorder.none,
             prefixIcon: prefixIcon,
