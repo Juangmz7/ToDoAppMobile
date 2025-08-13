@@ -6,12 +6,17 @@ import 'package:todo_app/presentation/presentation.dart';
 class TaskListSlideshow extends ConsumerWidget {
   const TaskListSlideshow({super.key});
 
-  final baseIndex = 500;
+  static final baseIndex = 500;
 
   // Date = today + ( index - today )
-  DateTime getDateFromIndex (int index) {
+  static DateTime getDateFromIndex (int index) {
     final date = DateTime.now().add(Duration( days: index - baseIndex )); 
     return DateTime(date.year, date.month, date.day);
+  }
+
+  static int getIndexFromDate(DateTime date) {
+    final today = DateTime.now();
+    return baseIndex + date.difference(today).inDays;
   }
 
   @override

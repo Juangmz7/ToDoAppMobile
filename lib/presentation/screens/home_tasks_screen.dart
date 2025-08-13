@@ -59,7 +59,7 @@ class HomeTasksScreen extends StatelessWidget {
                   taskFilterDialogCallback: TaskFilterMenuDialog.openDialog,
                 ),
       
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
               
                 //* Title with date (scrollable to next or previous day)
                 const TaskListSlideshow(),

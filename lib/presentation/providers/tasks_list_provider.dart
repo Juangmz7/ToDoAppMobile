@@ -5,8 +5,7 @@ import 'package:todo_app/domain/domain.dart';
 import 'package:todo_app/presentation/providers/providers.dart';
 import 'package:todo_app/states/states.dart';
 
-//TODO: Resolver problema autodispose con el provider
-final tasksListProvider = StateNotifierProvider<TasksNotifier, TaskListState>((ref) {
+final tasksListProvider = StateNotifierProvider.autoDispose<TasksNotifier, TaskListState>((ref) {
   
   final repository = ref.read(taskRepositoryProvider);
   final taskFilter = ref.watch(taskFilterProvider);
@@ -49,12 +48,16 @@ class TasksNotifier extends StateNotifier<TaskListState> {
 
       final tasks = await getTaskByFilterCallback();
 
+      if ( !mounted ) return;
+
       state = state.copyWith(
         tasks: tasks,
         isLoading: false
       );
 
     } catch (e) {
+
+      if ( !mounted ) return;
        
       state = state.copyWith(
         isLoading: false,

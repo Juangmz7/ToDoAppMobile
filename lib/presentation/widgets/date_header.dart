@@ -53,48 +53,46 @@ class DateHeader extends StatelessWidget {
     final formattedDate = _dateToDayOfTheWeek();
 
     return SizedBox(
-            height: size.height * 0.09,
+            height: size.height * 0.07,
             width: size.width * 0.85,
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  
-                  IconButton(
-                    onPressed: () => swiperController.previous(),
-                    icon: const Icon(
-                      Icons.arrow_back_ios_new_rounded
-                    )
-                  ),
-                  
-                  const SizedBox(width: 10),
-
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-
-                      //* Day of the week
-                      Text(
-                        formattedDate,
-                        style: textStyle.titleSmall,
-                      ),
-
-                      SizedBox(height: size.width * 0.005),
-
-                      //* Complete date (dd/mm/yyyy)
-                      Text('(${TaskResponse.dateTimeToNormalFormat(date)})', style: textStyle.titleSmall),
-                    ],
-                  ),
-
-                  const SizedBox(width: 10),
-                  IconButton(
-                    onPressed: () => swiperController.next(),
-                    icon: Icon(
-                      Icons.arrow_forward_ios_rounded
-                    )
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                
+                IconButton(
+                  onPressed: () => swiperController.previous(),
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new_rounded
                   )
-                ],
-              ),
+                ),
+                
+                const SizedBox(width: 10),
+            
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+            
+                    //* Day of the week
+                    Text(
+                      formattedDate,
+                      style: textStyle.titleSmall,
+                    ),
+            
+                    SizedBox(height: size.width * 0.005),
+            
+                    //* Complete date (dd/mm/yyyy)
+                    Text('(${TaskResponse.dateTimeToNormalFormat(date)})', style: textStyle.titleSmall),
+                  ],
+                ),
+            
+                const SizedBox(width: 10),
+                IconButton(
+                  onPressed: () => swiperController.next(),
+                  icon: Icon(
+                    Icons.arrow_forward_ios_rounded
+                  )
+                )
+              ],
             ),
           );
   }

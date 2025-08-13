@@ -3,6 +3,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/domain/domain.dart';
+import 'package:todo_app/presentation/dialogs/dialogs.dart';
 import 'package:todo_app/presentation/presentation.dart';
 
 
@@ -21,7 +22,7 @@ class TaskListView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final size = MediaQuery.of(context).size;
-    final date = ref.watch(activeDateProvider);
+    DateTime date = ref.watch(activeDateProvider);
 
     return SizedBox(
       height: size.height * 0.65,
@@ -34,8 +35,30 @@ class TaskListView extends ConsumerWidget {
             swiperController: swiperController,
             date: date
           ),
-          
-          const SizedBox(height: 20),
+
+          IconButton(
+            icon: Icon(Icons.calendar_month_rounded, size: size.width * 0.08),
+            onPressed: () async {
+
+              date = await showDatePickerDialog(
+                context: context,
+                initialDate: date
+              );
+
+              // Update the active date in the provider
+              ref.read(activeDateProvider.notifier).state = date;
+
+              final index = TaskListSlideshow.getIndexFromDate(date);
+
+              final offset = index - TaskListSlideshow.baseIndex;
+
+              // TODO: Arreglar el problema de que no se mueve al index correcto
+              swiperController.move(offset, animation: true);
+              
+            },
+          ),
+
+          const SizedBox(height: 10),
           
           //* Task List
           TaskList(tasks: tasks)
