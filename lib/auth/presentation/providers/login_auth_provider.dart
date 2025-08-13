@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:todo_app/auth/domain/domain.dart';
 import 'package:todo_app/auth/state/state.dart';
 import 'package:todo_app/shared/functions/format_exception.dart';
+import 'package:todo_app/shared/shared.dart';
 
 
 
@@ -33,8 +34,6 @@ class LoginAuthNotifier extends StateNotifier<LoginAuthState>{
     try {
 
       final String token = await userRepository.login(username, password);
-
-      //TODO: Fetch userRoles
       
       final user = User(
         username: username,
@@ -46,15 +45,10 @@ class LoginAuthNotifier extends StateNotifier<LoginAuthState>{
       _setLoggedUser(user);
 
       // Token storage
-      final tokenStorage = FlutterSecureStorage();
-      
-      // Also removes if there is an old token
-      await tokenStorage.write(key: 'token', value: token);
+      await SecureStorageHandler.saveToken(token);
 
-      final expiration = DateTime.now().add(const Duration(minutes: 30));
-
-      // Store the expiration time
-      await tokenStorage.write(key: 'token_expiration', value: expiration.toIso8601String());
+      // User details storage
+      await SecureStorageHandler.saveUser(username, password);
 
     }
     catch (e) {

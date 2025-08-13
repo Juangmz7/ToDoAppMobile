@@ -55,7 +55,7 @@ class TasksNotifier extends StateNotifier<TaskListState> {
       );
 
     } catch (e) {
-
+       
       state = state.copyWith(
         isLoading: false,
         errorMessage: e.toString()

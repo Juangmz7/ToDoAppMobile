@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo_app/domain/domain.dart';
+import 'package:todo_app/presentation/dialogs/dialogs.dart';
 import 'package:todo_app/presentation/presentation.dart';
 
 
@@ -15,12 +16,15 @@ class CreateTaskForm extends ConsumerStatefulWidget {
 class _CreateTaskFormState extends ConsumerState<CreateTaskForm> {
 
   final TextEditingController taskController = TextEditingController();
+  
   late TaskPriority selectedPriority;
+  late DateTime selectedDate;
 
   @override
   void initState() {
     super.initState();
     selectedPriority = TaskPriority.low; // Initialize with a default priority
+    selectedDate = ref.read(activeDateProvider); // Initialize with the current date
   }
 
   @override
@@ -43,8 +47,8 @@ class _CreateTaskFormState extends ConsumerState<CreateTaskForm> {
     final selectedColor = const Color.fromARGB(255, 60, 7, 151); 
 
     return SizedBox(
-        height: size.height * 0.75,
-        width: size.width * 0.95,
+        height: size.height * 0.5,
+        width: size.width * 0.8,
         child: Column(
           children: [
       
@@ -144,26 +148,55 @@ class _CreateTaskFormState extends ConsumerState<CreateTaskForm> {
             
             const SizedBox(height: 20),
 
-            Text('Fecha:', style: textStyle.titleMedium), // TODO: Calendario
+            Divider(
+              color: Color.fromARGB(255, 168, 163, 163),
+              endIndent: size.width * 0.07,
+              indent: size.width * 0.07,
+            ),
 
             const SizedBox(height: 10),
 
-          Container( //! QUitar
-              color: Colors.black,
-              height: size.height * 0.3,
-              width: size.height * 0.3,
+            FilledButton(
+              style: FilledButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 96, 19, 110),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(size.width * 0.02),
+                ),
+              ),
+              child: Text(
+                'Seleccionar fecha: ${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
+                style: textStyle.titleSmall,
+              ),
+              onPressed: () async {
+
+                selectedDate = await showDatePickerDialog(
+                  context: context,
+                  initialDate: selectedDate
+                );
+
+                setState(() {});
+              }
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
+
+            Divider(
+              color: Color.fromARGB(255, 168, 163, 163),
+              endIndent: size.width * 0.07,
+              indent: size.width * 0.07,
+            ),
+
+            const SizedBox(height: 10),
 
             CustomFilledButton(
               label: 'Enviar',
+              backgroundColor: const Color.fromARGB(255, 96, 19, 110),
               onPressed: () {
 
                 // Send task request object
                 ref.read(tasksListProvider.notifier).createTask(
                   body: taskController.text.trim(),
-                  taskDate: DateTime.now(), //! Quitar cuando se implemente el calendario
+                  taskDate: selectedDate,
                   priority: selectedPriority
                 );           
 
