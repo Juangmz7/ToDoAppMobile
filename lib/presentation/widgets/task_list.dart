@@ -121,6 +121,7 @@ class _TaskListState extends ConsumerState<TaskList> {
 
     return Expanded(
       child: ListView.builder(
+        physics: ClampingScrollPhysics(),
         itemBuilder: (context, index) {
             
           final task = widget.tasks[index];

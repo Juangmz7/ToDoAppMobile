@@ -19,6 +19,7 @@ class HomeTasksScreen extends StatelessWidget {
         children: [
       
           Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: AppTheme.taskPagesBackground,
             appBar: AppBar(
               leading: Padding(
@@ -45,28 +46,37 @@ class HomeTasksScreen extends StatelessWidget {
                 )
               ],
             ),
-            body: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-
-                Text('Bienvenido admin', style: textStyle.titleLarge),
-      
-                SizedBox(height: 30),
+            body: SingleChildScrollView(
+              reverse: true,
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
                 
-                //* Filters for the tasks
-                TaskFilters(
-                  taskFilterDialogCallback: TaskFilterMenuDialog.openDialog,
+                  Text('Bienvenido admin', style: textStyle.titleLarge),
+                      
+                  SizedBox(height: 30),
+                  
+                  //* Filters for the tasks
+                  TaskFilters(
+                    taskFilterDialogCallback: TaskFilterMenuDialog.openDialog,
+                  ),
+                      
+                  const SizedBox(height: 10),
+                
+                  //* Title with date (scrollable to next or previous day)
+                  const TaskListSlideshow(),
+                  
+                  SizedBox(height: 40 ),
+                
+                  Padding(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom + 10
+                    ),
+                  )
+                
+                  ],
                 ),
-      
-                const SizedBox(height: 10),
-              
-                //* Title with date (scrollable to next or previous day)
-                const TaskListSlideshow(),
-                
-                SizedBox(height: 40 ),
-              
-                ],
               ),
             ),
             
