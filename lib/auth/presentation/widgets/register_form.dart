@@ -107,10 +107,7 @@ class RegisterForm extends ConsumerWidget {
                 foregroundColor: WidgetStatePropertyAll(Colors.white)
               ),
               child: formProvider.isPosting ?
-                      CustomCircularProgressIndicator(
-                        horizontalPadding: 5,
-                        verticalPadding: 5,
-                      )                    
+                      const CustomCircularProgressIndicator()                    
                       : const Text('Crear cuenta'),
             ),
           ],

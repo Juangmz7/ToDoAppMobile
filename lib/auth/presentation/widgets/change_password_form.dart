@@ -66,10 +66,7 @@ class ChangePasswordForm extends ConsumerWidget {
       
               },
               child: changePasswordForm.isPosting ?
-                const CustomCircularProgressIndicator(
-                  horizontalPadding: 5,
-                  verticalPadding: 5,
-                )
+                const CustomCircularProgressIndicator()
                 : Text('Enviar')
             ),
           ],

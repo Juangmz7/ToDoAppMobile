@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 
 class CustomCircularProgressIndicator extends StatelessWidget {
 
-  final double verticalPadding;
-  final double horizontalPadding;
+  final double? height;
+  final double? width;
 
   const CustomCircularProgressIndicator({
     super.key,
-    this.verticalPadding = 15, 
-    this.horizontalPadding = 15
+    this.height, 
+    this.width
   });
 
   @override
@@ -18,9 +18,13 @@ class CustomCircularProgressIndicator extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: verticalPadding, horizontal: horizontalPadding),
-      child: CircularProgressIndicator(
-        strokeWidth: size.width * 0.008,
+      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+      child: SizedBox(
+        height: height ?? size.width * 0.06,
+        width: width ?? size.width * 0.06,
+        child: CircularProgressIndicator(
+          strokeWidth: size.width * 0.009,
+        ),
       )
     );
   }

@@ -6,7 +6,6 @@ import 'package:todo_app/auth/presentation/presentation.dart';
 
 
 import 'package:todo_app/auth/state/state.dart';
-import 'package:todo_app/config/router/app_router_notifier.dart';
 import 'package:todo_app/presentation/widgets/custom_circular_progress_indicator.dart';
 import 'package:todo_app/shared/shared.dart';
 
@@ -94,10 +93,7 @@ class LoginForm extends ConsumerWidget {
                 foregroundColor: WidgetStatePropertyAll(Colors.white)
               ),
               child: formProvider.isPosting ?
-                      CustomCircularProgressIndicator(
-                        horizontalPadding: 5,
-                        verticalPadding: 5,
-                      )
+                      const CustomCircularProgressIndicator()
                     : const Text('Ingresar')
             ),
 

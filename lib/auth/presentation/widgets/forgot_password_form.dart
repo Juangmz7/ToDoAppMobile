@@ -83,10 +83,7 @@ class _ForgotPasswordFormState extends ConsumerState<ForgotPasswordForm> {
         
               },
               child: forgotPasswordForm.isPosting ?
-                    CustomCircularProgressIndicator(
-                      horizontalPadding: 5,
-                      verticalPadding: 5,
-                    )
+                    const CustomCircularProgressIndicator()
                     : Text('Enviar'),
             ),
     

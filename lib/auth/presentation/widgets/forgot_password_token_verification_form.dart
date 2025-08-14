@@ -41,10 +41,7 @@ class ForgotPasswordTokenVerificationForm extends ConsumerWidget {
 
                 },
                 child: emailCodeValidatorForm.isPosting ? 
-                    CustomCircularProgressIndicator(
-                      horizontalPadding: 5,
-                      verticalPadding: 5,
-                    )
+                    const CustomCircularProgressIndicator()
                     : Text('Verificar')
               ),
 
