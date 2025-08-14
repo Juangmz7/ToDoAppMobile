@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_app/auth/presentation/providers/providers.dart';
 import 'package:todo_app/config/theme/app_theme.dart';
 import 'package:todo_app/presentation/dialogs/dialogs.dart';
 import 'package:todo_app/presentation/widgets/audio_record_button.dart';
+import 'package:todo_app/presentation/widgets/side_menu.dart';
 import 'package:todo_app/presentation/widgets/widgets.dart';
 
-class HomeTasksScreen extends ConsumerWidget {
+class HomeTasksScreen extends StatefulWidget {
+  
   const HomeTasksScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<HomeTasksScreen> createState() => _HomeTasksScreenState();
+}
+
+class _HomeTasksScreenState extends State<HomeTasksScreen> {
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  Widget build(BuildContext context) {
 
     final size = MediaQuery.of(context).size;
     final textStyle = Theme.of(context).textTheme;
@@ -21,15 +29,16 @@ class HomeTasksScreen extends ConsumerWidget {
         children: [
       
           Scaffold(
-            resizeToAvoidBottomInset: false,
+            key: scaffoldKey,
+            drawer: SideMenu(scaffoldKey: scaffoldKey),
+            resizeToAvoidBottomInset: false,            
             backgroundColor: AppTheme.taskPagesBackground,
             appBar: AppBar(
               leading: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 child: IconButton(
-                  onPressed: () {
-                    ref.read(loginAuthProvider.notifier).logout();
-                  },
+                  // Opens the side menu
+                  onPressed: () => scaffoldKey.currentState?.openDrawer(),
                   icon: Icon(
                     size: size.width * 0.09,
                     Icons.menu_rounded
@@ -39,7 +48,7 @@ class HomeTasksScreen extends ConsumerWidget {
               backgroundColor: AppTheme.taskPagesBackground,
               actions: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   child: IconButton(
                     onPressed: () {},
                     icon: Icon(
