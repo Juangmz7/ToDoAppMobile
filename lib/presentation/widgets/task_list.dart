@@ -101,7 +101,6 @@ class _TaskListState extends ConsumerState<TaskList> {
     final taskHeight = size.height * 0.07;
     final taskWidth = size.width * 0.85;
     final textStyle = Theme.of(context).textTheme;
-    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom; // TODO: Adjust for keyboard height
 
     if (widget.tasks.isEmpty) {
       return Container(

@@ -7,23 +7,25 @@ import 'package:todo_app/config/theme/app_theme.dart';
 Future<void> main() async {
 
   // Ensure that Flutter is initialized before loading environment variables
-  await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
 
   runApp(
     const ProviderScope(child: MyApp())
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(
+  Widget build(BuildContext context, WidgetRef ref) {
+    
+    final appRouter = ref.watch(goRouterProvider);
+
+    return MaterialApp.router(  
       routerConfig: appRouter,
-      title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: AppTheme().getTheme()
     );

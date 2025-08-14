@@ -57,6 +57,8 @@ class LoginFormNotifier extends StateNotifier<LoginFormState>{
     // Time to wait for get another request
     await Future.delayed(const Duration(milliseconds: 500));
 
+    if ( !mounted ) return;
+
     state = state.copyWith(
       isPosting: false
     );

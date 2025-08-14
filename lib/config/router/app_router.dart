@@ -1,14 +1,20 @@
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo_app/auth/presentation/presentation.dart';
+import 'package:todo_app/auth/state/auth_state.dart';
+import 'package:todo_app/config/config.dart';
 
 import 'package:todo_app/presentation/screens/screens.dart';
 
 
-final appRouter = GoRouter(
+final goRouterProvider = Provider((ref) {
 
-    initialLocation: '/login',
-  //initialLocation: '/home-tasks',
+  final goRouterNotifier = ref.read(goRouterNotifierProvider);
+
+  return GoRouter(
+  initialLocation: '/loading',
+  refreshListenable: goRouterNotifier,
   routes: [
 
     //* Auth routes
@@ -47,9 +53,49 @@ final appRouter = GoRouter(
       path: '/task',
       builder: (context, state) => const TaskScreen(),
     ),
+
+    GoRoute(
+      path: '/loading',
+      builder: (context, state) => const LoadingScreen(),
+    ),
   ],
 
-  //ToDo: redirections
+  redirect: (context, state) {
+    
+    final authStatus = goRouterNotifier.authStatus;
+    final isGoingTo = state.matchedLocation;
+
+    if ( isGoingTo == '/loading' && authStatus == AuthStatus.checking ) {
+      return null;
+    }
+
+    if ( authStatus == AuthStatus.notAuthenticated  ) {
+      if ( isGoingTo == '/login' || 
+           isGoingTo == '/register' || 
+           isGoingTo == '/forgot-password' || 
+           isGoingTo == '/forgot-password/code-verification' ||
+           isGoingTo == '/register-succeded' ) {
+        return null; // Allow navigation to these routes
+      }
+      return '/login'; // Redirect to login if not authenticated
+    }
+
+    if ( authStatus == AuthStatus.authenticated ) {
+      if ( isGoingTo == '/login' || 
+           isGoingTo == '/register' || 
+           isGoingTo == '/forgot-password' || 
+           isGoingTo == '/forgot-password/code-verification' ||
+           isGoingTo == '/register-succeded' || 
+           isGoingTo == '/loading') {
+        return '/home-tasks'; // Redirect to home tasks if authenticate-d
+      }
+      return null; // Allow navigation to other routes
+    }
+
+    return null; // Default case, no redirection needed
+
+  },
 
 
 );
+});

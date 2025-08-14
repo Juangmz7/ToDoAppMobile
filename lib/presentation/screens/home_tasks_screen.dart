@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_app/auth/presentation/providers/providers.dart';
 import 'package:todo_app/config/theme/app_theme.dart';
 import 'package:todo_app/presentation/dialogs/dialogs.dart';
 import 'package:todo_app/presentation/widgets/audio_record_button.dart';
 import 'package:todo_app/presentation/widgets/widgets.dart';
 
-class HomeTasksScreen extends StatelessWidget {
+class HomeTasksScreen extends ConsumerWidget {
   const HomeTasksScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
     final size = MediaQuery.of(context).size;
     final textStyle = Theme.of(context).textTheme;
@@ -25,7 +27,9 @@ class HomeTasksScreen extends StatelessWidget {
               leading: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    ref.read(loginAuthProvider.notifier).logout();
+                  },
                   icon: Icon(
                     size: size.width * 0.09,
                     Icons.menu_rounded

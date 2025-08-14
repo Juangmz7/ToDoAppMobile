@@ -4,7 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:todo_app/auth/domain/domain.dart';
 import 'package:todo_app/auth/state/state.dart';
-import 'package:todo_app/shared/functions/format_exception.dart';
+import 'package:todo_app/config/config.dart';
 import 'package:todo_app/shared/shared.dart';
 
 
@@ -12,8 +12,13 @@ import 'package:todo_app/shared/shared.dart';
 final loginAuthProvider = StateNotifierProvider<LoginAuthNotifier, LoginAuthState>((ref) {
 
   final UserRepository userRepository = UserRepositoryImpl();
+  final flutterSecureStorage = const FlutterSecureStorage();
 
-  return LoginAuthNotifier(userRepository: userRepository);
+  return LoginAuthNotifier(
+    userRepository: userRepository,
+    flutterSecureStorage: flutterSecureStorage,
+    ref: ref
+  );
 });
 
 
@@ -21,10 +26,17 @@ final loginAuthProvider = StateNotifierProvider<LoginAuthNotifier, LoginAuthStat
 class LoginAuthNotifier extends StateNotifier<LoginAuthState>{
 
   final UserRepository userRepository;
+  final FlutterSecureStorage flutterSecureStorage;
+  final Ref ref;
 
   LoginAuthNotifier({
-    required this.userRepository
-  }):super(LoginAuthState());
+    required this.userRepository,
+    required this.flutterSecureStorage,
+    required this.ref
+  }):super(LoginAuthState()) {
+    // Check if the user is authenticated when the notifier is created
+    checkAuthStatus();
+  }
 
   // User authentication
   Future<void> loginUser( String username, String password ) async {
@@ -42,13 +54,7 @@ class LoginAuthNotifier extends StateNotifier<LoginAuthState>{
         roles: ['USER']
       );
 
-      _setLoggedUser(user);
-
-      // Token storage
-      await SecureStorageHandler.saveToken(token);
-
-      // User details storage
-      await SecureStorageHandler.saveUser(username, password);
+     await _setLoggedUser(user);
 
     }
     catch (e) {
@@ -57,20 +63,36 @@ class LoginAuthNotifier extends StateNotifier<LoginAuthState>{
   }
 
   // Creates a new authenticated state
-  void _setLoggedUser( User user ) {
+  Future<void> _setLoggedUser( User user ) async {
     state = state.copyWith(
       authStatus: AuthStatus.authenticated,
       user: user
     );
+
+    // Token storage
+    await SecureStorageHandler.saveToken(user.token);
+
+    // User details storage
+    await SecureStorageHandler.saveUser(user.username, user.password);
+
+    // Updates the router provider state
+    ref.read(goRouterNotifierProvider).authStatus = state.authStatus;
+
   }
 
-  void _setUserNotAuthenticated( [ String? errorMessage ]) {
+  void _setUserNotAuthenticated( [ String? errorMessage ]) async {
 
     state = state.copyWith(
       authStatus: AuthStatus.notAuthenticated,
       user: null,
       errorMessage: errorMessage
     );
+
+    // Updates the router provider state
+    ref.read(goRouterNotifierProvider).authStatus = AuthStatus.notAuthenticated;
+
+    // Remove credentials from local storage
+    await SecureStorageHandler.deleteUser();
     
   }
 
@@ -81,7 +103,7 @@ class LoginAuthNotifier extends StateNotifier<LoginAuthState>{
 
       // Logout from server
       await userRepository.logout();
-      _setUserNotAuthenticated();
+      _setUserNotAuthenticated(errorMessage);
 
     } catch (e) {
 
@@ -91,6 +113,28 @@ class LoginAuthNotifier extends StateNotifier<LoginAuthState>{
 
     }
 
+  }
+
+  Future<void> checkAuthStatus() async {
+
+    final userMap = await SecureStorageHandler.getUser();
+
+    // If userMap is null, user is not authenticated
+    // This can happen if the user has not logged in before or if the user data is corrupted
+    // In this case, we set the user as not authenticated
+    if ( userMap == null ) {
+      _setUserNotAuthenticated();
+      return;
+    }
+
+    final user = User(
+      username: userMap['username']!,
+      password: userMap['password']!,
+      token: userMap['token']!,
+    );
+
+    // Set the user as authenticated
+    _setLoggedUser(user);
 
   }
 

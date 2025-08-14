@@ -27,5 +27,47 @@ class SecureStorageHandler {
     await _storage.write(key: 'username', value: username);
     await _storage.write(key: 'password', value: password);
   }
+
+  static Future<String?> _getToken() async {
+
+    final token = await _storage.read(key: 'token');
+    final expiryDateStr = await _storage.read(key: 'token_expiration');
+
+    if (token != null && expiryDateStr != null) {
+
+      final expiryDate = DateTime.parse(expiryDateStr);
+
+      if (expiryDate.isAfter(DateTime.now())) {
+        return token; // Token is valid
+      } else {
+        await _storage.delete(key: 'token'); // Token expired, delete it
+      }
+
+    }
+    return null; // No valid token found
+  }
+
+  static Future<Map<String, String?>?> getUser() async {
+    final username = await _storage.read(key: 'username');
+    final password = await _storage.read(key: 'password');
+
+    if (username != null && password != null) {
+      return {
+        'username': username,
+        'password': password,
+        'token': await _getToken()
+      };
+    }
+
+    return null; // No hay usuario guardado
+  }
+
+  static Future<void> deleteUser() async {
+    await _storage.delete(key: 'username');
+    await _storage.delete(key: 'password');
+    await _storage.delete(key: 'token');
+  }
+
+
 }
 

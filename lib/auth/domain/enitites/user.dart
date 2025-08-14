@@ -4,13 +4,13 @@ class User {
   final String username;
   final String password;
   final String token;
-  final List<String> roles;
+  final List<String>? roles;
 
   User({
     required this.username,
     required this.password,
     required this.token,
-    required this.roles
+    this.roles = const ['USER']
   });
 
   User copyWith ({
