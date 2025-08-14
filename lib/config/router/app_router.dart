@@ -74,7 +74,7 @@ final goRouterProvider = Provider((ref) {
            isGoingTo == '/register' || 
            isGoingTo == '/forgot-password' || 
            isGoingTo == '/forgot-password/code-verification' ||
-           isGoingTo == '/register-succeded' ) {
+           isGoingTo == '/register-succedeed' ) {
         return null; // Allow navigation to these routes
       }
       return '/login'; // Redirect to login if not authenticated
@@ -85,11 +85,18 @@ final goRouterProvider = Provider((ref) {
            isGoingTo == '/register' || 
            isGoingTo == '/forgot-password' || 
            isGoingTo == '/forgot-password/code-verification' ||
-           isGoingTo == '/register-succeded' || 
+           isGoingTo == '/register-succedeed' || 
            isGoingTo == '/loading') {
         return '/home-tasks'; // Redirect to home tasks if authenticate-d
       }
       return null; // Allow navigation to other routes
+    }
+
+     if ( authStatus == AuthStatus.registrationSuccess ) {
+      if ( isGoingTo == '/register-succeded') {
+        return null;
+      }
+      return '/register-succeded';
     }
 
     return null; // Default case, no redirection needed
