@@ -48,12 +48,7 @@ final goRouterProvider = Provider((ref) {
       path: '/home-tasks',
       builder: (context, state) => const HomeTasksScreen(),
     ),
-
-    GoRoute(
-      path: '/task',
-      builder: (context, state) => const TaskScreen(),
-    ),
-
+    
     GoRoute(
       path: '/loading',
       builder: (context, state) => const LoadingScreen(),

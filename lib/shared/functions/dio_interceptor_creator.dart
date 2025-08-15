@@ -20,7 +20,7 @@ Dio createDio( {required bool authRequired, required String url} ) {
         if ( !authRequired ) return handler.next(options);
 
         if ( await SecureStorageHandler.hasTokenExpired() ) {
-          // If the token has expired, it refresh it
+          // If the token has expired, it will refresh it
           await SecureStorageHandler.refreshToken();   
         }
         
