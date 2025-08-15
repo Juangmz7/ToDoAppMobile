@@ -4,7 +4,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:todo_app/auth/domain/domain.dart';
 import 'package:todo_app/auth/state/state.dart';
-import 'package:todo_app/config/config.dart';
 import 'package:todo_app/shared/shared.dart';
 
 
@@ -72,9 +71,6 @@ class LoginAuthNotifier extends StateNotifier<LoginAuthState>{
       authStatus: AuthStatus.authenticated,
       user: user
     );
-
-    // Updates the router provider state
-    ref.read(goRouterNotifierProvider).authStatus = state.authStatus;
   }
 
   Future<void> _saveUserCredentials( User user ) async {
@@ -91,10 +87,7 @@ class LoginAuthNotifier extends StateNotifier<LoginAuthState>{
       authStatus: AuthStatus.notAuthenticated,
       user: null,
       errorMessage: errorMessage
-    );
-
-    // Updates the router provider state
-    ref.read(goRouterNotifierProvider).authStatus = AuthStatus.notAuthenticated;
+    ); 
 
     // Remove credentials from local storage
     await SecureStorageHandler.deleteUser();

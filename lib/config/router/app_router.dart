@@ -10,7 +10,7 @@ import 'package:todo_app/presentation/screens/screens.dart';
 
 final goRouterProvider = Provider((ref) {
 
-  final goRouterNotifier = ref.read(goRouterNotifierProvider);
+  final goRouterNotifier = ref.watch(goRouterNotifierProvider);
 
   return GoRouter(
   initialLocation: '/loading',
@@ -48,7 +48,7 @@ final goRouterProvider = Provider((ref) {
       path: '/home-tasks',
       builder: (context, state) => const HomeTasksScreen(),
     ),
-    
+
     GoRoute(
       path: '/loading',
       builder: (context, state) => const LoadingScreen(),
