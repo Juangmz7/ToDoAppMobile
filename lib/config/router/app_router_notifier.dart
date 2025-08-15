@@ -22,7 +22,7 @@ class GoRouterNotifier extends ChangeNotifier {
   // to notify changes in authentication status
   GoRouterNotifier(this._authNotifier) {
     _authNotifier.addListener((state) {
-      _authStatus = state.authStatus;
+      authStatus = state.authStatus;
     });
   }
 
