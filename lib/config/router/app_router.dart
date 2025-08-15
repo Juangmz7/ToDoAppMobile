@@ -92,12 +92,6 @@ final goRouterProvider = Provider((ref) {
       return null; // Allow navigation to other routes
     }
 
-     if ( authStatus == AuthStatus.registrationSuccess ) {
-      if ( isGoingTo == '/register-succeded') {
-        return null;
-      }
-      return '/register-succeded';
-    }
 
     return null; // Default case, no redirection needed
 

@@ -1,6 +1,5 @@
 
 import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:todo_app/shared/functions/secure_storage_handler.dart';
 
 Dio createDio( {required bool authRequired, required String url} ) {
@@ -20,22 +19,12 @@ Dio createDio( {required bool authRequired, required String url} ) {
         
         if ( !authRequired ) return handler.next(options);
 
-        final tokenStorage = FlutterSecureStorage();
-
-        // Verify the token exipration
-        final tokenExpiration = await tokenStorage.read(key: 'token_expiration');
-
-        if ( tokenExpiration != null ) {
-
-          final expirationDate = DateTime.parse(tokenExpiration);
-          
+        if ( await SecureStorageHandler.hasTokenExpired() ) {
           // If the token has expired, it refresh it
-          if ( expirationDate.isBefore(DateTime.now()) ) {
-            SecureStorageHandler.refreshToken();
-          }
+          await SecureStorageHandler.refreshToken();   
         }
         
-        final token = await tokenStorage.read(key: 'token');
+        final token = await SecureStorageHandler.getToken();
 
         if(token != null) {
           // Add the token to the header

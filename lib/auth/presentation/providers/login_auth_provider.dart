@@ -53,8 +53,12 @@ class LoginAuthNotifier extends StateNotifier<LoginAuthState>{
         token: token,
         roles: ['USER']
       );
-
+    
+     // Sets the state to authenticated
      await _setLoggedUser(user);
+
+     // Saves user and token into the state
+     await _saveUserCredentials(user);
 
     }
     catch (e) {
@@ -69,15 +73,16 @@ class LoginAuthNotifier extends StateNotifier<LoginAuthState>{
       user: user
     );
 
+    // Updates the router provider state
+    ref.read(goRouterNotifierProvider).authStatus = state.authStatus;
+  }
+
+  Future<void> _saveUserCredentials( User user ) async {
     // Token storage
     await SecureStorageHandler.saveToken(user.token);
 
     // User details storage
     await SecureStorageHandler.saveUser(user.username, user.password);
-
-    // Updates the router provider state
-    ref.read(goRouterNotifierProvider).authStatus = state.authStatus;
-
   }
 
   void _setUserNotAuthenticated( [ String? errorMessage ]) async {
