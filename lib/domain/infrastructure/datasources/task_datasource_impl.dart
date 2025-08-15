@@ -228,7 +228,29 @@ class TaskDatasourceImpl extends TaskDatasource{
     }
 
   }
+  
+  @override
+  Future<List<Task>> searchTasks(String query) async {
+    
+    try {
 
+      final response = await _dio.get('/search-by-similarities');
+
+      if (response.data == null) {
+        throw Exception('No data received from server');
+      }
+
+      return _jsonToTaskList(response.data);
+
+    } on DioException catch (e) {
+
+      dioExceptionHandler(e);
+      throw Exception('Failed to search for tasks: ${e.message}');
+
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
   
 
 }

@@ -19,4 +19,6 @@ abstract class TaskDatasource {
 
   Future<Task> createTask(TaskRequest taskRequest);
 
+  Future<List<Task>> searchTasks(String query);
+
 }

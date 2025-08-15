@@ -50,5 +50,10 @@ class TaskRepositoryImpl extends TaskRepository{
   Future<Task> createTask(TaskRequest taskRequest) {
     return taskDatasource.createTask(taskRequest);
   }
+  
+  @override
+  Future<List<Task>> searchTasks(String query) {
+    return taskDatasource.searchTasks(query);
+  }
 
 }

@@ -18,5 +18,7 @@ abstract class TaskRepository {
   Future<Task> audioTaskSender(File file);
 
   Future<Task> createTask(TaskRequest taskRequest);
+
+  Future<List<Task>> searchTasks(String query);
   
 }
